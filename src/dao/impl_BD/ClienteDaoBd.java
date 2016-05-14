@@ -1,47 +1,30 @@
-package dao;
+package dao.impl_BD;
 
+import dao.ClienteDao;
+import dominio.Cliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import br.com.senacrs.consultorio.dominio.Paciente;
-import br.com.senacrs.consultorio.dao.PacienteDao;
 
-public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
-  
+public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
 
     //Metodo salvar: trabalhar com data e recebe o id auto-increment 
     //e já relaciona no objeto paciente (recebido por parâmetro)
     //Caso queira retornar, só retornar id.
     @Override
-    public void salvar(Paciente paciente) {
-        int id = 0;
+    public void salvar(Cliente cliente) {
         try {
-            String sql = "INSERT INTO paciente (rg, nome, datanascimento) "
-                    + "VALUES (?,?,?)";
-
-            //Foi criado um novo método conectar para obter o id
-            conectarObtendoId(sql);
-            comando.setString(1, paciente.getRg());
-            comando.setString(2, paciente.getNome());
-            //Trabalhando com data: lembrando dataUtil -> dataSql
-            java.sql.Date dataSql = new java.sql.Date(paciente.getDataNascimento().getTime());
-            comando.setDate(3, dataSql);
+            String sql = "INSERT INTO cliente (nome, telefone)"
+                    + "VALUES (?,?)";
+            conectar(sql);
+            comando.setString(1, cliente.getNome());
+            comando.setString(2, cliente.getTelefone());
             comando.executeUpdate();
             //Obtém o resultSet para pegar o id
             ResultSet resultado = comando.getGeneratedKeys();
-            if (resultado.next()) {
-                //seta o id para o objeto
-                id = resultado.getInt(1);
-                paciente.setId(id);
-            }
-            else{
-                System.err.println("Erro de Sistema - Nao gerou o id conforme esperado!");
-                throw new BDException("Nao gerou o id conforme esperado!");
-            }
-
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao salvar paciente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao salvar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -49,16 +32,16 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
     }
 
     @Override
-    public void deletar(Paciente paciente) {
+    public void deletar(Cliente cliente) {
         try {
-            String sql = "DELETE FROM paciente WHERE id = ?";
+            String sql = "DELETE FROM cliente WHERE nome = ?";
 
             conectar(sql);
-            comando.setInt(1, paciente.getId());
+            comando.setString(1, cliente.getNome());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao deletar paciente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao deletar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -67,18 +50,15 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
     }
 
     @Override
-    public void atualizar(Paciente paciente) {
+    public void atualizar(Cliente cliente) {
         try {
-            String sql = "UPDATE paciente SET rg=?, nome=?, datanascimento=? "
-                    + "WHERE id=?";
+            String sql = "UPDATE cliente SET nome=?, telefone=? "
+                    + "WHERE nome=?";
 
             conectar(sql);
-            comando.setString(1, paciente.getRg());
-            comando.setString(2, paciente.getNome());
-            //Trabalhando com data: lembrando dataUtil -> dataSql
-            java.sql.Date dataSql = new java.sql.Date(paciente.getDataNascimento().getTime());
-            comando.setDate(3, dataSql);
-            comando.setInt(4, paciente.getId());
+            comando.setString(1, cliente.getNome());
+            comando.setString(2, cliente.getTelefone());
+            comando.setString(3, cliente.getNome());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
@@ -91,10 +71,10 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
     }
 
     @Override
-    public List<Paciente> listar() {
-        List<Paciente> listaPacientes = new ArrayList<>();
+    public List<Cliente> listar() {
+        List<Cliente> listaClientes = new ArrayList<>();
 
-        String sql = "SELECT * FROM paciente";
+        String sql = "SELECT * FROM cliente";
 
         try {
             conectar(sql);
@@ -102,16 +82,12 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                int id = resultado.getInt("id");
-                String rg = resultado.getString("rg");
                 String nome = resultado.getString("nome");
-                //Trabalhando com data: lembrando dataSql -> dataUtil
-                java.sql.Date dataSql = resultado.getDate("datanascimento");
-                java.util.Date dataUtil = new java.util.Date(dataSql.getTime());
+                String telefone = resultado.getString("telefone");
 
-                Paciente pac = new Paciente(id, rg, nome, dataUtil);
+                Cliente cli = new Cliente(nome, telefone);
 
-                listaPacientes.add(pac);
+                listaClientes.add(cli);
 
             }
 
@@ -122,11 +98,12 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
             fecharConexao();
         }
 
-        return (listaPacientes);
+        return (listaClientes);
     }
 
+    /*
     @Override
-    public Paciente procurarPorId(int id) {
+    public Cliente procurarPorId(int id) {
         String sql = "SELECT * FROM paciente WHERE id = ?";
 
         try {
@@ -190,11 +167,11 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
 
         return (null);
     }
-
+     */
     @Override
-    public List<Paciente> procurarPorNome(String nome) {
-        List<Paciente> listaPacientes = new ArrayList<>();
-        String sql = "SELECT * FROM paciente WHERE nome LIKE ?";
+    public List<Cliente> procurarPorNomeLista(String nome) {
+        List<Cliente> listaCliente = new ArrayList<>();
+        String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
 
         try {
             conectar(sql);
@@ -202,16 +179,13 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                int id = resultado.getInt("id");
-                String rg = resultado.getString("rg");
+                //int matricula = resultado.getInt("matricula");
                 String nomeX = resultado.getString("nome");
-                //Trabalhando com data: lembrando dataSql -> dataUtil
-                java.sql.Date dataSql = resultado.getDate("datanascimento");
-                java.util.Date dataUtil = new java.util.Date(dataSql.getTime());
+                String telefoneX = resultado.getString("telefone");
 
-                Paciente pac = new Paciente(id, rg, nomeX, dataUtil);
+                Cliente c = new Cliente(nomeX, telefoneX);
 
-                listaPacientes.add(pac);
+                listaCliente.add(c);
 
             }
 
@@ -221,6 +195,35 @@ public class ClienteDaoBd extends DaoBd<Paciente> implements PacienteDao {
         } finally {
             fecharConexao();
         }
-        return (listaPacientes);
+        return (listaCliente);
+    }
+
+    @Override
+    public Cliente procurarPorNome(String nome) {
+        String sql = "SELECT * FROM cliente WHERE nome = ?";
+
+        try {
+            conectar(sql);
+            comando.setString(1, nome);
+
+            ResultSet resultado = comando.executeQuery();
+
+            if (resultado.next()) {
+                String nome1 = resultado.getString("nome");
+                String telefone1 = resultado.getString("telefone");
+
+                Cliente cli = new Cliente(nome1, telefone1);
+
+                return cli;
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Erro de Sistema - Problema ao buscar o paciente pelo id do Banco de Dados!");
+            throw new RuntimeException(ex);
+        } finally {
+            fecharConexao();
+        }
+
+        return (null);
     }
 }

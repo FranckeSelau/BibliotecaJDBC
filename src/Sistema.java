@@ -19,7 +19,7 @@ import util.Console;
  */
 public class Sistema {
 
-    public static void main(String[] args) {
+   public static void main(String[] args) {
         try {
             Class.forName("org.postgresql.Driver"); // habilitando o driver
 

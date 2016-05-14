@@ -1,12 +1,13 @@
-package dao;
+package dao.impl_BD;
 
+import dao.Dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class DaoBd<T> implements Dao<T>{
-    protected Connection conexao;
-    protected PreparedStatement comando;
+    protected static Connection conexao;
+    protected static PreparedStatement comando;
 
     public Connection conectar(String sql) throws SQLException {
         conexao = BDUtil.getConnection();
@@ -19,7 +20,7 @@ public abstract class DaoBd<T> implements Dao<T>{
         comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
     }
 
-    public void fecharConexao() {
+    public static void fecharConexao() {
         try {
             if (comando != null) {
                 comando.close();

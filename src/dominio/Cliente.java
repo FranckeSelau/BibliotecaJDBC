@@ -44,12 +44,20 @@ public class Cliente {
     public String getNome() {
         return nome;
     }
+    
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     /**
      * Retorna o telefone
      *
-     * @return telefone de uma pessoa
+     * @param telefone
      */
+    public void setTelefone(String telefone) {
+       this.telefone = telefone;
+    }
+    
     public String getTelefone() {
         return telefone;
     }
