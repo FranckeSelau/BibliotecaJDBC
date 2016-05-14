@@ -3,26 +3,20 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author lhries
- */
 public class BDUtil {
     private final static String HOST = "localhost";
     private final static String PORT = "5432";
-    private final static String BD = "lp2_consultorio";
-    private final static String URL = "jdbc:postgresql://"+HOST+":"+PORT+"/"+BD;
+    private final static String BD = "postgres";
+    private final static String URL = "jdbc:postgresql://"+HOST+":"+PORT+"/"+BD; // caminho do JDBC
     private final static String USUARIO = "postgres";
-    private final static String SENHA = "postgres";
+    private final static String SENHA = "123456";
     
     public static Connection getConnection(){
         Connection conexao = null;
         try {
-            Class.forName("org.postgresql.Driver");
-            conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
+            Class.forName("org.postgresql.Driver"); // habilitando o driver
+            conexao = DriverManager.getConnection(URL, USUARIO, SENHA); //fazendo a conexão com o banco
             
         } catch (ClassNotFoundException ex) {
             System.err.println("Erro de Sistema - Classe do Driver Nao Encontrada!");
@@ -32,6 +26,5 @@ public class BDUtil {
             throw new RuntimeException(ex);
         }
         return(conexao);
-    }
-    
+    }    
 }
