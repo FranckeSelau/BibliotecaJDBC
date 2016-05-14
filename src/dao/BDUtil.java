@@ -17,7 +17,9 @@ public class BDUtil {
         try {
             Class.forName("org.postgresql.Driver"); // habilitando o driver
             conexao = DriverManager.getConnection(URL, USUARIO, SENHA); //fazendo a conexão com o banco
-            
+            if (conexao != null) {
+                System.out.println("Banco conectado com sucesso!!!");
+            }
         } catch (ClassNotFoundException ex) {
             System.err.println("Erro de Sistema - Classe do Driver Nao Encontrada!");
             throw new RuntimeException(ex);

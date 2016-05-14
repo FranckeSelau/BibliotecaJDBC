@@ -22,16 +22,11 @@ public class Cliente {
      * @param telefone identifica telefone de uma pessoa.
      *
      */
-    public Cliente(int matricula, String nome, String telefone) {
-        this.matricula = matricula;
+    public Cliente(String nome, String telefone) {
         this.nome = nome;
         this.telefone = telefone;
     }
     
-    public void setMatricula(int matricula) {
-        this.matricula = matricula;
-    }
-
     /**
      * Retorna a matrícula
      *
