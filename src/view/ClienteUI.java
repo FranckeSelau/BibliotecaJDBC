@@ -102,7 +102,7 @@ public class ClienteUI {
                 cli.setTelefone(telefoneNovo);
             }
             
-            clienteNegocio.atualizar(cli);
+            clienteNegocio.atualizar(cli, nome);
             System.out.println("Cliente " + nome + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
@@ -123,6 +123,7 @@ public class ClienteUI {
     private void mostrarCliente(Cliente c) {
         System.out.println("-----------------------------");
         System.out.println("Cliente");
+        System.out.println("Matrícula " + c.getMatricula());
         System.out.println("Nome: " + c.getNome());
         System.out.println("Telefone: " + c.getTelefone());
         System.out.println("-----------------------------");

@@ -28,6 +28,17 @@ public class Cliente {
     }
     
     /**
+     *
+     * @param matricula
+     * @param nome
+     * @param telefone
+     */
+    public Cliente(int matricula, String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+    }
+    
+    /**
      * Retorna a matrícula
      *
      * @return matrícula de uma pessoa
@@ -35,7 +46,10 @@ public class Cliente {
     public int getMatricula() {
         return matricula;
     }
-
+    
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
     /**
      * Retorna o nome
      *

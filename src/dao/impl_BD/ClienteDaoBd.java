@@ -50,7 +50,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public void atualizar(Cliente cliente) {
+    public void atualizar(Cliente cliente, String nome) {
         try {
             String sql = "UPDATE cliente SET nome=?, telefone=? "
                     + "WHERE nome=?";
@@ -58,7 +58,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
             conectar(sql);
             comando.setString(1, cliente.getNome());
             comando.setString(2, cliente.getTelefone());
-            comando.setString(3, cliente.getNome());
+            comando.setString(3, nome);
             comando.executeUpdate();
 
         } catch (SQLException ex) {
@@ -209,11 +209,9 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
-                String nome1 = resultado.getString("nome");
-                String telefone1 = resultado.getString("telefone");
+                String telefone = resultado.getString("telefone");
 
-                Cliente cli = new Cliente(nome1, telefone1);
-
+                Cliente cli = new Cliente(nome, telefone);                
                 return cli;
             }
 
@@ -225,5 +223,5 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
         }
 
         return (null);
-    }
+    }    
 }

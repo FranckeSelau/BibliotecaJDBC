@@ -31,12 +31,12 @@ public class ClienteNegocio {
         clienteDao.deletar(cliente);
     }
 
-    public void atualizar(Cliente cliente) throws NegocioException {
+    public void atualizar(Cliente cliente, String nome) throws NegocioException {
         if (cliente == null || cliente.getNome() == null) {
             throw new NegocioException("Cliente nao existe!");
         }
         this.validarCamposObrigatorios(cliente);
-        clienteDao.atualizar(cliente);
+        clienteDao.atualizar(cliente, nome);
     }
 
         public Cliente procurarNome1(String nome) throws NegocioException {
