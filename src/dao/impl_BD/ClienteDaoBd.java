@@ -62,7 +62,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao atualizar paciente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao atualizar este cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();

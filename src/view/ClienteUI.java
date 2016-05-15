@@ -89,21 +89,21 @@ public class ClienteUI {
     }
 
     private void atualizarCliente() {
-        String nome = Console.scanString("Nome do paciente a ser alterado: ");
+        String nome = Console.scanString("Nome do Cliente a ser alterado: ");
         try {
             Cliente cli = clienteNegocio.procurarNome1(nome);
             this.mostrarCliente(cli);
 
             System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
             String nomeNovo = Console.scanString("Nome: ");
-            String telefone = Console.scanString("Telefone: ");
-            if (!nomeNovo.isEmpty()) {
+            String telefoneNovo = Console.scanString("Telefone: ");
+            if (!nome.isEmpty()) {
                 cli.setNome(nomeNovo);
-                cli.setTelefone(telefone);
+                cli.setTelefone(telefoneNovo);
             }
             
             clienteNegocio.atualizar(cli);
-            System.out.println("Cliente " + nomeNovo + " atualizado com sucesso!");
+            System.out.println("Cliente " + nome + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
