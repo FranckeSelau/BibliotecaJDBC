@@ -3,14 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/view/ClienteUI.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/Sistema.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/dao/ClienteDao.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/negocio/ClienteNegocio.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/dao/Dao.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/dao/impl_BD/ClienteDaoBd.java</file>
             <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/dao/impl_BD/DaoBd.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/SistemaFinal.java</file>
+            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/Sistema/Sistema.java</file>
+            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/APS_GRUD/src/dao/impl_BD/BDUtil.java</file>
         </group>
     </open-files>
 </project-private>

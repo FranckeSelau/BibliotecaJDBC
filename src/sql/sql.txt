@@ -1,0 +1,10 @@
+create table cliente (
+matricula serial primary key,
+nome character varying(40),
+telefone character varying(15)
+);
+
+DELETE FROM cliente;
+ALTER SEQUENCE cliente_matricula_seq RESTART WITH 1;
+
+SELECT * FROM cliente;
