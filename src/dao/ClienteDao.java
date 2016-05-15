@@ -2,7 +2,7 @@
 package dao;
 
 import java.util.List;
-import dominio.Cliente;
+import model.Cliente;
 
 /**
  *

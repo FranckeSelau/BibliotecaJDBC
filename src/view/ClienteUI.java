@@ -1,6 +1,6 @@
 package view;
 
-import dominio.Cliente;
+import model.Cliente;
 
 import view.menu.ClienteMenu;
 import java.util.InputMismatchException;

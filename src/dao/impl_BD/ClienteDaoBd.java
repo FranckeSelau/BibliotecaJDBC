@@ -1,7 +1,7 @@
 package dao.impl_BD;
 
 import dao.ClienteDao;
-import dominio.Cliente;
+import model.Cliente;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

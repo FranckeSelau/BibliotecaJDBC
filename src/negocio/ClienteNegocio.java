@@ -3,7 +3,7 @@ package negocio;
 
 import dao.ClienteDao;
 import dao.impl_BD.ClienteDaoBd;
-import dominio.Cliente;
+import model.Cliente;
 import java.util.List;
 
 public class ClienteNegocio {
