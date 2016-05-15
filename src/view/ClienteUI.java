@@ -26,7 +26,7 @@ public class ClienteUI {
         do {
             try {
                 System.out.println(ClienteMenu.getOpcoes());
-                opcao = Console.scanInt("Digite sua opção:");
+                opcao = Console.scanInt("Digite sua opção: ");
                 switch (opcao) {
                     case ClienteMenu.OP_CADASTRAR:
                         cadastrarCliente();
@@ -73,13 +73,13 @@ public class ClienteUI {
     }
 
     private void deletarCliente() {
-        String nome = Console.scanString("RG do paciente a ser deletado: ");
+        String nome = Console.scanString("Nome do cliente a ser deletado: ");
         try {
             Cliente cli = clienteNegocio.procurarNome1(nome);
             this.mostrarCliente(cli);
-            if (UIUtil.getConfirmacao("Realmente deseja excluir esse paciente?")) {
+            if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
                 clienteNegocio.deletar(cli);
-                System.out.println("Paciente deletado com sucesso!");
+                System.out.println("Clente deletado com sucesso!");
             } else {
                 System.out.println("Operacao cancelada!");
             }
@@ -123,7 +123,6 @@ public class ClienteUI {
     private void mostrarCliente(Cliente c) {
         System.out.println("-----------------------------");
         System.out.println("Cliente");
-        System.out.println("Matrícula " + c.getMatricula());
         System.out.println("Nome: " + c.getNome());
         System.out.println("Telefone: " + c.getTelefone());
         System.out.println("-----------------------------");

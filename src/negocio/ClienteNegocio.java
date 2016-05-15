@@ -1,6 +1,5 @@
 package negocio;
 
-
 import dao.ClienteDao;
 import dao.impl_BD.ClienteDaoBd;
 import model.Cliente;
@@ -56,12 +55,7 @@ public class ClienteNegocio {
         }
         return(clienteDao.procurarPorNomeLista(nome));
     }
-    /*
-    public boolean clienteExiste(String nome) {
-        Cliente cliente = Dao.procurarPornome(nome);
-        return (cliente != null);
-    }*/
-
+    
     private void validarCamposObrigatorios(Cliente c) throws NegocioException {
         if (c.getTelefone() == null || c.getTelefone().isEmpty()) {
             throw new NegocioException("Campo Telefone nao informado");
@@ -71,11 +65,4 @@ public class ClienteNegocio {
             throw new NegocioException("Campo nome nao informado");
         }
     }
-/*
-    private void validarRgExistente(Paciente p) throws NegocioException {
-        if (pacienteExiste(p.getRg())) {
-            throw new NegocioException("RG ja existente");
-        }
-    }*/
-
 }

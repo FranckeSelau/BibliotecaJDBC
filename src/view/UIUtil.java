@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package view;
 
 import util.Console;
@@ -19,7 +15,7 @@ public class UIUtil {
     public static boolean getConfirmacao(Object msg) {
         String confirmacao = "NAO";
         do {
-            confirmacao = Console.scanString(msg+"(sim/nao)");
+            confirmacao = Console.scanString(msg+"(sim/nao): ");
             if (confirmacao.equalsIgnoreCase(SIM)) {
                 return true;
             }
@@ -32,6 +28,5 @@ public class UIUtil {
         }while(confirmacao.equalsIgnoreCase(SIM) || 
                 confirmacao.equalsIgnoreCase(NAO));
         return false;
-    } 
-    
+    }     
 }

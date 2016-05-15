@@ -17,7 +17,6 @@ public class Cliente {
     /**
      * Construtor para inicializar cliente
      *
-     * @param matricula identifica a matrícula de uma pessoa.
      * @param nome identifica o nome de uma pessoa.
      * @param telefone identifica telefone de uma pessoa.
      *
@@ -28,10 +27,12 @@ public class Cliente {
     }
     
     /**
+     * Construtor para inicializar cliente
      *
-     * @param matricula
-     * @param nome
-     * @param telefone
+     * @param matricula identifica a matrícula de uma pessoa.
+     * @param nome identifica o nome de uma pessoa.
+     * @param telefone identifica telefone de uma pessoa.
+     *
      */
     public Cliente(int matricula, String nome, String telefone) {
         this.nome = nome;
@@ -90,9 +91,7 @@ public class Cliente {
 
     public void setAtrasos(int atrasos) {
         this.atrasos = atrasos;
-    }
-    
-    
+    }    
 
     /**
      * Faz o controle de matrículas para não inserir uma nova repetida.
