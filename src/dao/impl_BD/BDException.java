@@ -3,7 +3,7 @@ package dao.impl_BD;
 
 /**
  *
- * @author 
+ * @author lries
  */
 public class BDException extends RuntimeException {
 
