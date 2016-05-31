@@ -133,11 +133,10 @@ public class ClienteUI {
             System.out.println("Clientes nao encontrados!");
         } else {
             System.out.println("-----------------------------\n");
-            System.out.println(String.format("%-20s", "|NOME") + "\t"
+            System.out.println(String.format("%-20s", "|MATRÍCULA") +"\t"+ String.format("%-20s", "|NOME") + "\t"
                     + String.format("%-20s", "|TELEFONE"));
             for (Cliente cliente : listaClientes) {
-                System.out.println(String.format("%-20s", "|" + cliente.getNome()) + "\t"
-                        + String.format("%-20s", "|" + cliente.getTelefone()));
+                System.out.println(String.format("%-20s", "|" + cliente.getMatricula()) + "\t"+ String.format("%-20s", "|" + cliente.getNome()) + "\t"+ String.format("%-20s", "|" + cliente.getTelefone()));
             }
         }
     }    
