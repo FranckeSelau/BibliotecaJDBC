@@ -35,6 +35,7 @@ public class Cliente {
      *
      */
     public Cliente(int matricula, String nome, String telefone) {
+        this.matricula = matricula;
         this.nome = nome;
         this.telefone = telefone;
     }

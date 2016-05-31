@@ -25,6 +25,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 //seta a matricula para o objeto
                 matricula = resultado.getInt(1);
                 cliente.setMatricula(matricula);
+                System.out.println(cliente.toString());
             }
             else{
                 System.err.println("Erro de Sistema - Nao gerou amatricula conforme esperado!");
@@ -84,9 +85,10 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
+                int matricula = resultado.getInt("matricula");
                 String nome = resultado.getString("nome");
                 String telefone = resultado.getString("telefone");
-                int matricula = resultado.getInt("matricula");
+                
                 
 
                 Cliente cli = new Cliente(matricula, nome, telefone);
