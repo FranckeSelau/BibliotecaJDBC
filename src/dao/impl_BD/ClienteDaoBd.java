@@ -11,13 +11,25 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
 
     @Override
     public void salvar(Cliente cliente) {
+        int matricula = 0;
         try {
             String sql = "INSERT INTO cliente (nome, telefone)"
                     + "VALUES (?,?)";
-            conectar(sql);
+            conectarObtendoMatricula(sql);
             comando.setString(1, cliente.getNome());
             comando.setString(2, cliente.getTelefone());
             comando.executeUpdate();
+            //Obtém o resultSet para pegar a matricula
+            ResultSet resultado = comando.getGeneratedKeys();
+            if (resultado.next()) {
+                //seta a matricula para o objeto
+                matricula = resultado.getInt(1);
+                cliente.setMatricula(matricula);
+            }
+            else{
+                System.err.println("Erro de Sistema - Nao gerou amatricula conforme esperado!");
+                throw new BDException("Nao gerou a matrícula conforme esperado!");
+            }
         } catch (SQLException ex) {
             System.err.println("Erro de Sistema - Problema ao salvar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
@@ -74,8 +86,10 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
             while (resultado.next()) {
                 String nome = resultado.getString("nome");
                 String telefone = resultado.getString("telefone");
+                int matricula = resultado.getInt("matricula");
+                
 
-                Cliente cli = new Cliente(nome, telefone);
+                Cliente cli = new Cliente(matricula, nome, telefone);
 
                 listaClientes.add(cli);
             }
