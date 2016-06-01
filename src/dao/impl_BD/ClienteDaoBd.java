@@ -41,9 +41,9 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     @Override
     public void deletar(Cliente cliente) {
         try {
-            String sql = "DELETE FROM cliente WHERE nome = ?";
+            String sql = "DELETE FROM cliente WHERE matricula = ?";
             conectar(sql);
-            comando.setString(1, cliente.getNome());
+            comando.setInt(1, cliente.getMatricula());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
@@ -131,29 +131,32 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public Cliente procurarPorNome(String nome) {
-        String sql = "SELECT * FROM cliente WHERE nome = ?";
+    public Cliente procurarPorMatricula(int matricula) {
+        String sql = "SELECT * FROM paciente WHERE id = ?";
 
         try {
             conectar(sql);
-            comando.setString(1, nome);
+            comando.setInt(1, matricula);
 
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
+                String nome = resultado.getString("nome");
                 String telefone = resultado.getString("telefone");
+                
+                Cliente cli = new Cliente(matricula, nome, telefone);
 
-                Cliente cli = new Cliente(nome, telefone);                
                 return cli;
+
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar o cliente pelo nome do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar o paciente pelo id do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
         }
 
         return (null);
-    }    
+    }
 }

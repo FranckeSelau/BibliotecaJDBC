@@ -73,9 +73,10 @@ public class ClienteUI {
     }
 
     private void deletarCliente() {
-        String nome = Console.scanString("Nome do cliente a ser deletado: ");
+        mostrarClientes();
+        int matricula = Console.scanInt("\nMatrícula do cliente a ser deletado: ");
         try {
-            Cliente cli = clienteNegocio.procurarNome1(nome);
+            Cliente cli = clienteNegocio.procurarMatricula(matricula);
             this.mostrarCliente(cli);
             if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
                 clienteNegocio.deletar(cli);
@@ -89,21 +90,22 @@ public class ClienteUI {
     }
 
     private void atualizarCliente() {
-        String nome = Console.scanString("Nome do Cliente a ser alterado: ");
+        mostrarClientes();
+        int matricula = Console.scanInt("\nMatrícula do Cliente a ser alterado: ");
         try {
-            Cliente cli = clienteNegocio.procurarNome1(nome);
+            Cliente cli = clienteNegocio.procurarMatricula(matricula);
             this.mostrarCliente(cli);
 
             System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
             String nomeNovo = Console.scanString("Nome: ");
             String telefoneNovo = Console.scanString("Telefone: ");
-            if (!nome.isEmpty()) {
+            if (matricula != 0) {
                 cli.setNome(nomeNovo);
                 cli.setTelefone(telefoneNovo);
             }
             
-            clienteNegocio.atualizar(cli, nome);
-            System.out.println("Cliente " + nome + " atualizado com sucesso!");
+            clienteNegocio.atualizar(cli);
+            System.out.println("Cliente " + cli.getNome() + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }

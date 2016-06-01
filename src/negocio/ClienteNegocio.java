@@ -30,19 +30,19 @@ public class ClienteNegocio {
         clienteDao.deletar(cliente);
     }
 
-    public void atualizar(Cliente cliente, String nome) throws NegocioException {
+    public void atualizar(Cliente cliente) throws NegocioException {
         if (cliente == null || cliente.getNome() == null) {
             throw new NegocioException("Cliente nao existe!");
         }
         this.validarCamposObrigatorios(cliente);
-        clienteDao.atualizar(cliente, nome);
+        clienteDao.atualizar(cliente);
     }
 
-        public Cliente procurarNome1(String nome) throws NegocioException {
-        if (nome == null || nome.isEmpty()) {
-            throw new NegocioException("Campo RG nao informado");
+        public Cliente procurarMatricula(int matricula) throws NegocioException {
+        if (matricula == 0) {
+            throw new NegocioException("Campo Matrícula nao informado");
         }
-        Cliente cliente = clienteDao.procurarPorNome(nome);
+        Cliente cliente = clienteDao.procurarPorMatricula(matricula);
         if (cliente == null) {
             throw new NegocioException("Paciente nao encontrado");
         }
