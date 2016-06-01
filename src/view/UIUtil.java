@@ -5,8 +5,8 @@ import util.Console;
 
 public class UIUtil {
 
-    public static final String SIM = "sim";
-    public static final String NAO = "nao";
+    public static final String SIM = "s";
+    public static final String NAO = "n";
     
     public static void mostrarErro(Object msgErro) {
         System.err.println(msgErro);
@@ -15,7 +15,7 @@ public class UIUtil {
     public static boolean getConfirmacao(Object msg) {
         String confirmacao = "NAO";
         do {
-            confirmacao = Console.scanString(msg+"(sim/nao): ");
+            confirmacao = Console.scanString(msg+"(s/n): ");
             if (confirmacao.equalsIgnoreCase(SIM)) {
                 return true;
             }

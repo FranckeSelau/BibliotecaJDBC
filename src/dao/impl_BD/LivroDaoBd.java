@@ -1,30 +1,35 @@
 package dao.impl_BD;
 
-import dao.ClienteDao;
-import model.Cliente;
+import dao.LivroDao;
+import model.Livro;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
+public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 
     @Override
-    public void salvar(Cliente cliente) {
+    public void salvar(Livro livro) {
         int matricula = 0;
         try {
-            String sql = "INSERT INTO cliente (nome, telefone)"
-                    + "VALUES (?,?)";
+            String sql = "INSERT INTO livro (isbn, nome, autor, editora, ano)"
+                    + "VALUES (?,?,?,?,?)";
             conectarObtendoMatricula(sql);
-            comando.setString(1, cliente.getNome());
-            comando.setString(2, cliente.getTelefone());
+            comando.setInt(1, livro.getIsbn());
+            comando.setString(2, livro.getNome());
+            comando.setString(3, livro.getAutor());            
+            comando.setString(4, livro.getEditora());
+            //Trabalhando com data: lembrando dataUtil -> dataSql
+            java.sql.Date dataSql = new java.sql.Date(livro.getAno().getTime());
+            comando.setDate(5, dataSql);
             comando.executeUpdate();
             //Obtém o resultSet para pegar a matricula
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 //seta a matricula para o objeto
                 matricula = resultado.getInt(1);
-                cliente.setMatricula(matricula);
+                livro.setMatricula(matricula);
             }
             else{
                 System.err.println("Erro de Sistema - Nao gerou amatricula conforme esperado!");
@@ -39,7 +44,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public void deletar(Cliente cliente) {
+    public void deletar(Livro cliente) {
         try {
             String sql = "DELETE FROM cliente WHERE matricula = ?";
             conectar(sql);
@@ -55,7 +60,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public void atualizar(Cliente cliente) {
+    public void atualizar(Livro cliente) {
         try {
             String sql = "UPDATE cliente SET nome=?, telefone=? "
                     + "WHERE matricula=?";
@@ -75,10 +80,10 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public List<Cliente> listar() {
-        List<Cliente> listaClientes = new ArrayList<>();
+    public List<Livro> listar() {
+        List<Livro> listaLivros = new ArrayList<>();
 
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM livro";
 
         try {
             conectar(sql);
@@ -89,9 +94,9 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 String nome = resultado.getString("nome");
                 String telefone = resultado.getString("telefone");
                 
-                Cliente cli = new Cliente(matricula, nome, telefone);
+                Livro cli = new Livro(matricula, nome, telefone);
 
-                listaClientes.add(cli);
+                listaLivros.add(cli);
             }
 
         } catch (SQLException ex) {
@@ -100,7 +105,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
         } finally {
             fecharConexao();
         }
-        return (listaClientes);
+        return (listaLivros);
     }
     
     @Override

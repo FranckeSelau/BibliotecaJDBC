@@ -76,7 +76,7 @@ public class ClienteUI {
         mostrarClientes();
         int matricula = Console.scanInt("\nMatrícula do cliente a ser deletado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula(matricula);
+            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
             this.mostrarCliente(cli);
             if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
                 clienteNegocio.deletar(cli);
@@ -93,17 +93,23 @@ public class ClienteUI {
         mostrarClientes();
         int matricula = Console.scanInt("\nMatrícula do Cliente a ser alterado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula(matricula);
+            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
             this.mostrarCliente(cli);
 
             System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
             String nomeNovo = Console.scanString("Nome: ");
             String telefoneNovo = Console.scanString("Telefone: ");
+
             if (matricula != 0) {
-                cli.setNome(nomeNovo);
-                cli.setTelefone(telefoneNovo);
+                if (!nomeNovo.isEmpty()) {
+                    cli.setNome(nomeNovo);
+                }
+
+                if (!telefoneNovo.isEmpty()) {
+                    cli.setTelefone(telefoneNovo);
+                }
             }
-            
+
             clienteNegocio.atualizar(cli);
             System.out.println("Cliente " + cli.getNome() + " atualizado com sucesso!");
         } catch (NegocioException ex) {
