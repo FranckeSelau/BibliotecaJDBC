@@ -11,7 +11,6 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 
     @Override
     public void salvar(Livro livro) {
-        int matricula = 0;
         try {
             String sql = "INSERT INTO livro (isbn, nome, autor, editora, ano)"
                     + "VALUES (?,?,?,?,?)";
@@ -24,17 +23,6 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             java.sql.Date dataSql = new java.sql.Date(livro.getAno().getTime());
             comando.setDate(5, dataSql);
             comando.executeUpdate();
-            //Obtém o resultSet para pegar a matricula
-            ResultSet resultado = comando.getGeneratedKeys();
-            if (resultado.next()) {
-                //seta a matricula para o objeto
-                matricula = resultado.getInt(1);
-                livro.setMatricula(matricula);
-            }
-            else{
-                System.err.println("Erro de Sistema - Nao gerou amatricula conforme esperado!");
-                throw new BDException("Nao gerou a matrícula conforme esperado!");
-            }
         } catch (SQLException ex) {
             System.err.println("Erro de Sistema - Problema ao salvar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
@@ -44,15 +32,15 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
     }
 
     @Override
-    public void deletar(Livro cliente) {
+    public void deletar(Livro livro) {
         try {
-            String sql = "DELETE FROM cliente WHERE matricula = ?";
+            String sql = "DELETE FROM livro WHERE ibsn = ?";
             conectar(sql);
-            comando.setInt(1, cliente.getMatricula());
+            comando.setInt(1, livro.getIsbn());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao deletar cliente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao deletar livro no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -60,19 +48,22 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
     }
 
     @Override
-    public void atualizar(Livro cliente) {
+    public void atualizar(Livro livro) {
         try {
-            String sql = "UPDATE cliente SET nome=?, telefone=? "
-                    + "WHERE matricula=?";
+            String sql = "UPDATE livro SET nome=?, autor=?, editora=?, ano=? "
+                    + "WHERE isbn=?";
             
             conectar(sql);
-            comando.setString(1, cliente.getNome());
-            comando.setString(2, cliente.getTelefone());
-            comando.setInt(3, cliente.getMatricula());
+            comando.setString(1, livro.getNome());
+            comando.setString(2, livro.getAutor());            
+            comando.setString(3, livro.getEditora());
+            //Trabalhando com data: lembrando dataUtil -> dataSql
+            java.sql.Date dataSql = new java.sql.Date(livro.getAno().getTime());
+            comando.setDate(4, dataSql);
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao atualizar este cliente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao atualizar este livro no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -90,17 +81,21 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                int matricula = resultado.getInt("matricula");
+                int isbn = resultado.getInt("isbn");
                 String nome = resultado.getString("nome");
-                String telefone = resultado.getString("telefone");
+                String autor = resultado.getString("autor");
+                String editora = resultado.getString("editora");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                java.sql.Date dataSql = resultado.getDate("ano");
+                java.util.Date dataUtil = new java.util.Date(dataSql.getTime());
                 
-                Livro cli = new Livro(matricula, nome, telefone);
+                Livro liv = new Livro(isbn, nome, autor, editora, dataUtil);
 
-                listaLivros.add(cli);
+                listaLivros.add(liv);
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar os clientes do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar os livros do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
