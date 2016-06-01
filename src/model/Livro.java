@@ -13,8 +13,7 @@ import java.util.Date;
 public class Livro {
 
     private static int CODIGO_GERADO = 1;
-    private String nome, autor, editora;
-    private int isbn;
+    private String isbn, nome, autor, editora;
     private Date ano;
     private int retiradas;
 
@@ -28,11 +27,18 @@ public class Livro {
      * @param ano identifica o ano de publicação de um livro.
      *
      */
-    public Livro(int isbn, String nome, String autor, String editora, Date ano) {
+    public Livro(String isbn, String nome, String autor, String editora, Date ano) {
+        this.isbn = isbn;
         this.nome = nome;
         this.autor = autor;
-        this.editora = editora;
-        this.isbn = isbn;
+        this.editora = editora;        
+        this.ano = ano;
+    }
+    
+    public Livro(String nome, String autor, String editora, Date ano) {
+        this.nome = nome;
+        this.autor = autor;
+        this.editora = editora;        
         this.ano = ano;
     }
 
@@ -77,7 +83,7 @@ public class Livro {
      *
      * @return matrícula de uma pessoa
      */
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 

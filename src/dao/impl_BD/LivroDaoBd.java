@@ -15,7 +15,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             String sql = "INSERT INTO livro (isbn, nome, autor, editora, ano)"
                     + "VALUES (?,?,?,?,?)";
             conectarObtendoMatricula(sql);
-            comando.setInt(1, livro.getIsbn());
+            comando.setString(1, livro.getIsbn());
             comando.setString(2, livro.getNome());
             comando.setString(3, livro.getAutor());            
             comando.setString(4, livro.getEditora());
@@ -36,7 +36,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
         try {
             String sql = "DELETE FROM livro WHERE ibsn = ?";
             conectar(sql);
-            comando.setInt(1, livro.getIsbn());
+            comando.setString(1, livro.getIsbn());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
@@ -81,7 +81,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                int isbn = resultado.getInt("isbn");
+                String isbn = resultado.getString("isbn");
                 String nome = resultado.getString("nome");
                 String autor = resultado.getString("autor");
                 String editora = resultado.getString("editora");
@@ -104,9 +104,9 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
     }
     
     @Override
-    public List<Cliente> procurarPorNomeLista(String nome) {
-        List<Cliente> listaCliente = new ArrayList<>();
-        String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
+    public List<Livro> procurarPorNomeListaLivro(String nome) {
+        List<Livro> listaLivro = new ArrayList<>();
+        String sql = "SELECT * FROM livro WHERE nome LIKE ?";
 
         try {
             conectar(sql);
@@ -114,24 +114,29 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
-                int matriculaX = resultado.getInt("matricula");
+                String isbnX = resultado.getString("isbn");
                 String nomeX = resultado.getString("nome");
-                String telefoneX = resultado.getString("telefone");
+                String autorX = resultado.getString("autor");
+                String editoraX = resultado.getString("editora");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                java.sql.Date dataSql = resultado.getDate("ano");
+                java.util.Date dataUtilX = new java.util.Date(dataSql.getTime());
 
-                Cliente c = new Cliente(matriculaX, nomeX, telefoneX);
+                Livro l = new Livro(isbnX, nomeX, autorX, editoraX, dataUtilX);
 
-                listaCliente.add(c);
+                listaLivro.add(l);
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar os clientes pelo nome do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar os livros pelo nome do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
         }
-        return (listaCliente);
+        return (listaLivro);
     }
 
+    /*
     @Override
     public Cliente procurarPorMatricula(int matricula) {
         String sql = "SELECT * FROM cliente WHERE matricula = ?";
@@ -161,4 +166,45 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 
         return (null);
     }
+*/
+
+    @Override
+    public Livro procurarPorMatricula(int matricula) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Livro procurarPorIsbn(String isbn) {
+        String sql = "SELECT * FROM livro WHERE isbn = ?";
+
+        try {
+            conectar(sql);
+            comando.setString(1, isbn);
+
+            ResultSet resultado = comando.executeQuery();
+
+            if (resultado.next()) {
+                String nome = resultado.getString("nome");
+                String autor = resultado.getString("autor");
+                String editora = resultado.getString("editora");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                java.sql.Date dataSql = resultado.getDate("ano");
+                java.util.Date dataUtil = new java.util.Date(dataSql.getTime());
+
+                Livro l = new Livro(nome, autor, editora, dataUtil);
+                
+                return l;
+
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Erro de Sistema - Problema ao buscar o paciente pelo rg do Banco de Dados!");
+            throw new RuntimeException(ex);
+        } finally {
+            fecharConexao();
+        }
+
+        return (null);
+    }
+
 }
