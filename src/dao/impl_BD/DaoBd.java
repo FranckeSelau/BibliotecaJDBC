@@ -19,6 +19,11 @@ public abstract class DaoBd<T> implements Dao<T>{
         conexao = BDUtil.getConnection();
         comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
     }
+    
+    public void conectarObtendoId(String sql) throws SQLException {
+        conexao = BDUtil.getConnection();
+        comando = conexao.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+    }
 
     public static void fecharConexao() {
         try {

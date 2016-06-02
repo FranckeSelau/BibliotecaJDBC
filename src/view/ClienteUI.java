@@ -16,9 +16,20 @@ import util.Console;
 public class ClienteUI {
 
     private ClienteNegocio clienteNegocio;
+    private Cliente cliente;
 
     public ClienteUI() {
         clienteNegocio = new ClienteNegocio();
+    }
+    
+     /**
+     * Construtor para inicializar menu cliente
+     *
+     * @param cliente de clientes.
+     */
+    public ClienteUI(Cliente cliente) {
+        this(); // chama o construtor acima "ClienteUI()" que está sem parametro
+        this.cliente = cliente;
     }
 
     public void menu() {
@@ -88,6 +99,8 @@ public class ClienteUI {
             UIUtil.mostrarErro(ex.getMessage());
         }
     }
+    
+   
 
     private void atualizarCliente() {
         mostrarClientes();

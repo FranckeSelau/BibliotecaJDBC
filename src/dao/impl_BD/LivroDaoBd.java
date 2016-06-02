@@ -14,7 +14,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
         try {
             String sql = "INSERT INTO livro (isbn, nome, autor, editora, ano)"
                     + "VALUES (?,?,?,?,?)";
-            conectarObtendoMatricula(sql);
+            conectar(sql);
             comando.setString(1, livro.getIsbn());
             comando.setString(2, livro.getNome());
             comando.setString(3, livro.getAutor());            
@@ -34,7 +34,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
     @Override
     public void deletar(Livro livro) {
         try {
-            String sql = "DELETE FROM livro WHERE ibsn = ?";
+            String sql = "DELETE FROM livro WHERE isbn = ?";
             conectar(sql);
             comando.setString(1, livro.getIsbn());
             comando.executeUpdate();
@@ -185,6 +185,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
+                String isbnX = isbn;
                 String nome = resultado.getString("nome");
                 String autor = resultado.getString("autor");
                 String editora = resultado.getString("editora");
@@ -192,7 +193,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
                 java.sql.Date dataSql = resultado.getDate("ano");
                 java.util.Date dataUtil = new java.util.Date(dataSql.getTime());
 
-                Livro l = new Livro(nome, autor, editora, dataUtil);
+                Livro l = new Livro(isbnX, nome, autor, editora, dataUtil);
                 
                 return l;
 

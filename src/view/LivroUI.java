@@ -18,9 +18,19 @@ import util.DateUtil;
 public class LivroUI {
 
     private LivroNegocio livroNegocio;
+    private Livro livro;
 
     public LivroUI() {
         livroNegocio = new LivroNegocio();
+    }    
+     /**
+     * Construtor para inicializar menu cliente
+     *
+     * @param livro de clientes.
+     */
+    public LivroUI(Livro livro) {
+        this();
+        this.livro = livro;
     }
 
     public void menu() {
@@ -56,7 +66,7 @@ public class LivroUI {
             }
 
         } while (opcao != LivroMenu.OP_SAIR);
-    }
+    }   
 
     private void cadastrarLivro() {
         String isbn = Console.scanString("ISBN: ");
@@ -67,7 +77,7 @@ public class LivroUI {
         
         try {
             livroNegocio.salvar(new Livro(isbn, nome, autor, editora, DateUtil.stringToYear(dataString)));
-            System.out.println("Cliente " + nome + " cadastrado com sucesso!");
+            System.out.println("Livro " + nome + " cadastrado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }catch (ParseException ex) {
