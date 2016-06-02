@@ -1,49 +1,51 @@
 package view;
 
-import model.Cliente;
+import java.text.ParseException;
+import model.Livro;
 
-import view.menu.ClienteMenu;
+import view.menu.LivroMenu;
 import java.util.InputMismatchException;
 import java.util.List;
-import negocio.ClienteNegocio;
+import negocio.LivroNegocio;
 import negocio.NegocioException;
 import util.Console;
+import util.DateUtil;
 
 /**
  *
- * @author lhries
+ * @author Francke
  */
 public class LivroUI {
 
-    private ClienteNegocio clienteNegocio;
+    private LivroNegocio livroNegocio;
 
     public LivroUI() {
-        clienteNegocio = new ClienteNegocio();
+        livroNegocio = new LivroNegocio();
     }
 
     public void menu() {
         int opcao = -1;
         do {
             try {
-                System.out.println(ClienteMenu.getOpcoes());
+                System.out.println(LivroMenu.getOpcoes());
                 opcao = Console.scanInt("Digite sua opção: ");
                 switch (opcao) {
-                    case ClienteMenu.OP_CADASTRAR:
+                    case LivroMenu.OP_CADASTRAR:
                         cadastrarLivro();
                         break;
-                    case ClienteMenu.OP_DELETAR:
+                    case LivroMenu.OP_DELETAR:
                         deletarCliente();
                         break;
-                    case ClienteMenu.OP_ATUALIZAR:
+                    case LivroMenu.OP_ATUALIZAR:
                         atualizarCliente();
                         break;
-                    case ClienteMenu.OP_LISTAR:
-                        mostrarClientes();
+                    case LivroMenu.OP_LISTAR:
+                        mostrarLivros();
                         break;
-                    case ClienteMenu.OP_CONSULTAR:
+                    case LivroMenu.OP_CONSULTAR:
                         consultarClientePorNome();
                         break;
-                    case ClienteMenu.OP_SAIR:
+                    case LivroMenu.OP_SAIR:
                         System.out.println("Finalizando a aplicacao..");
                         break;
                     default:
@@ -53,37 +55,39 @@ public class LivroUI {
                 UIUtil.mostrarErro("Somente numeros sao permitidos!");
             }
 
-        } while (opcao != ClienteMenu.OP_SAIR);
+        } while (opcao != LivroMenu.OP_SAIR);
     }
 
     private void cadastrarLivro() {
-        String isbn = Console.scanInt("ISBN: ");
+        String isbn = Console.scanString("ISBN: ");
         String nome = Console.scanString("Nome: ");
         String autor = Console.scanString("Autor: ");
         String editora = Console.scanString("Editora: ");
         String dataString = Console.scanString("Ano: ");
         
         try {
-            clienteNegocio.salvar(new Livro(isbn, nome, autor, editora, dataString));
+            livroNegocio.salvar(new Livro(isbn, nome, autor, editora, DateUtil.stringToYear(dataString)));
             System.out.println("Cliente " + nome + " cadastrado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
+        }catch (ParseException ex) {
+            UIUtil.mostrarErro("Formato de Data inválido!");
         }
     }
 
-    public void mostrarClientes() {
-        List<Cliente> listaClientes = clienteNegocio.listar();
-        this.mostrarClientes(listaClientes);
+    public void mostrarLivros() {
+        List<Livro> listaLivros = livroNegocio.listar();
+        this.mostrarLivros(listaLivros);
     }
 
     private void deletarCliente() {
-        mostrarClientes();
+        mostrarLivros();
         int matricula = Console.scanInt("\nMatrícula do cliente a ser deletado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
+            Cliente cli = livroNegocio.procurarMatricula1(matricula);
             this.mostrarCliente(cli);
             if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
-                clienteNegocio.deletar(cli);
+                livroNegocio.deletar(cli);
                 System.out.println("Clente deletado com sucesso!");
             } else {
                 System.out.println("Operacao cancelada!");
@@ -94,10 +98,10 @@ public class LivroUI {
     }
 
     private void atualizarCliente() {
-        mostrarClientes();
+        mostrarLivros();
         int matricula = Console.scanInt("\nMatrícula do Cliente a ser alterado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
+            Cliente cli = livroNegocio.procurarMatricula1(matricula);
             this.mostrarCliente(cli);
 
             System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
@@ -114,7 +118,7 @@ public class LivroUI {
                 }
             }
 
-            clienteNegocio.atualizar(cli);
+            livroNegocio.atualizar(cli);
             System.out.println("Cliente " + cli.getNome() + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
@@ -124,7 +128,7 @@ public class LivroUI {
     private void consultarClientePorNome() {
         String nome = Console.scanString("Nome: ");
         try {
-            List<Cliente> listaCli = clienteNegocio.procurarNome(nome);
+            List<Cliente> listaCli = livroNegocio.procurarNome(nome);
             this.mostrarClientes(listaCli);
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
@@ -140,7 +144,7 @@ public class LivroUI {
         System.out.println("-----------------------------");
     }
 
-    private void mostrarClientes(List<Cliente> listaClientes) {
+    private void mostrarLivros(List<Cliente> listaClientes) {
         if (listaClientes.isEmpty()) {
             System.out.println("Clientes nao encontrados!");
         } else {
