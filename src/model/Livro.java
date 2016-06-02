@@ -51,6 +51,26 @@ public class Livro {
         return CODIGO_GERADO;
     }
 
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public void setAno(Date ano) {
+        this.ano = ano;
+    }
+
     /**
      * Retorna o nome
      *

@@ -34,16 +34,16 @@ public class LivroUI {
                         cadastrarLivro();
                         break;
                     case LivroMenu.OP_DELETAR:
-                        deletarCliente();
+                        deletarLivro();
                         break;
                     case LivroMenu.OP_ATUALIZAR:
-                        atualizarCliente();
+                        atualizarLivro();
                         break;
                     case LivroMenu.OP_LISTAR:
                         mostrarLivros();
                         break;
                     case LivroMenu.OP_CONSULTAR:
-                        consultarClientePorNome();
+                        consultarLivroPorNome();
                         break;
                     case LivroMenu.OP_SAIR:
                         System.out.println("Finalizando a aplicacao..");
@@ -80,15 +80,15 @@ public class LivroUI {
         this.mostrarLivros(listaLivros);
     }
 
-    private void deletarCliente() {
+    private void deletarLivro() {
         mostrarLivros();
-        int matricula = Console.scanInt("\nMatrícula do cliente a ser deletado: ");
+        String isbn = Console.scanString("\nISBN do livro a ser deletado: ");
         try {
-            Cliente cli = livroNegocio.procurarMatricula1(matricula);
-            this.mostrarCliente(cli);
-            if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
-                livroNegocio.deletar(cli);
-                System.out.println("Clente deletado com sucesso!");
+            Livro liv = livroNegocio.procurarPorIsbn(isbn);
+            this.mostrarLivro(liv);
+            if (UIUtil.getConfirmacao("Realmente deseja excluir esse livro?")) {
+                livroNegocio.deletar(liv);
+                System.out.println("Livro deletado com sucesso!");
             } else {
                 System.out.println("Operacao cancelada!");
             }
@@ -97,63 +97,81 @@ public class LivroUI {
         }
     }
 
-    private void atualizarCliente() {
+    private void atualizarLivro() {
         mostrarLivros();
-        int matricula = Console.scanInt("\nMatrícula do Cliente a ser alterado: ");
+        String isbn = Console.scanString("\nISBN do livro a ser alterado: ");
         try {
-            Cliente cli = livroNegocio.procurarMatricula1(matricula);
-            this.mostrarCliente(cli);
+            Livro liv = livroNegocio.procurarPorIsbn(isbn);
+            this.mostrarLivro(liv);
 
-            System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
+            System.out.println("Digite os dados do livro que quer alterar [Vazio caso nao queira]");
             String nomeNovo = Console.scanString("Nome: ");
-            String telefoneNovo = Console.scanString("Telefone: ");
+            String autorNovo = Console.scanString("Autor: ");
+            String editoraNovo = Console.scanString("Editora: ");
+            String dataStringNovo = Console.scanString("Ano: ");
 
-            if (matricula != 0) {
+            if (isbn != null) {
                 if (!nomeNovo.isEmpty()) {
-                    cli.setNome(nomeNovo);
+                    liv.setNome(nomeNovo);
                 }
-
-                if (!telefoneNovo.isEmpty()) {
-                    cli.setTelefone(telefoneNovo);
+                if (!autorNovo.isEmpty()) {
+                    liv.setAutor(autorNovo);
+                }
+                if (!editoraNovo.isEmpty()) {
+                    liv.setEditora(editoraNovo);
+                }
+                if (!dataStringNovo.isEmpty()) {
+                    liv.setAno(DateUtil.stringToYear(dataStringNovo));
                 }
             }
 
-            livroNegocio.atualizar(cli);
-            System.out.println("Cliente " + cli.getNome() + " atualizado com sucesso!");
+            livroNegocio.atualizar(liv);
+            System.out.println("Cliente " + liv.getNome() + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
+        } catch (ParseException ex) {
+            UIUtil.mostrarErro("Formato de Data inválido!");
         }
     }
 
-    private void consultarClientePorNome() {
+    private void consultarLivroPorNome() {
         String nome = Console.scanString("Nome: ");
         try {
-            List<Cliente> listaCli = livroNegocio.procurarNome(nome);
-            this.mostrarClientes(listaCli);
+            List<Livro> listaLiv = livroNegocio.procurarNome(nome);
+            this.mostrarLivros(listaLiv);
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
-
     }
 
-    private void mostrarCliente(Cliente c) {
+    private void mostrarLivro(Livro l) {
         System.out.println("-----------------------------");
-        System.out.println("Cliente");
-        System.out.println("Nome: " + c.getNome());
-        System.out.println("Telefone: " + c.getTelefone());
+        System.out.println("Livro");
+        System.out.println("ISBN: " + l.getIsbn());
+        System.out.println("Nome: " + l.getNome());
+        System.out.println("Autor: " + l.getAutor());
+        System.out.println("Editora: " + l.getEditora());
+        System.out.println("Ano: " + l.getAno());
         System.out.println("-----------------------------");
     }
 
-    private void mostrarLivros(List<Cliente> listaClientes) {
-        if (listaClientes.isEmpty()) {
-            System.out.println("Clientes nao encontrados!");
+    private void mostrarLivros(List<Livro> listaLivros) {
+        if (listaLivros.isEmpty()) {
+            System.out.println("Livros nao encontrados!");
         } else {
-            System.out.println("-----------------------------\n");
-            System.out.println(String.format("%-20s", "|MATRÍCULA") +"\t"+ String.format("%-20s", "|NOME") + "\t"
-                    + String.format("%-20s", "|TELEFONE"));
-            for (Cliente cliente : listaClientes) {
-                System.out.println(String.format("%-20s", "|" + cliente.getMatricula()) + "\t"+ String.format("%-20s", "|" + cliente.getNome()) + "\t"+ String.format("%-20s", "|" + cliente.getTelefone()));
+            System.out.println("--------------------------------------\n");
+            System.out.println(String.format("%-10s", "ISBN") + "\t"
+                    + String.format("%-20s", "|NOME") + "\t"
+                    + String.format("%-20s", "|AUTOR") + "\t"
+                    + String.format("%-20s", "|EDITORA") + "\t"
+                    + String.format("%-5s", "|ANO"));
+            for (Livro livro : listaLivros) {
+                System.out.println(String.format("%-10s", livro.getIsbn()) + "\t"
+                        + String.format("%-20s", "|" + livro.getNome()) + "\t"
+                        + String.format("%-20s", "|" + livro.getAutor()) + "\t"
+                        + String.format("%-20s", "|" + livro.getEditora()) + "\t"
+                        + String.format("%-5s", "|" + DateUtil.yearToString(livro.getAno()))); // converte ano data em String
             }
         }
-    }    
+    }
 }

@@ -36,7 +36,18 @@ public class LivroNegocio {
         }
         this.validarCamposObrigatorios(livro);
         livroDao.atualizar(livro);
-    }   
+    } 
+    
+    public Livro procurarPorIsbn(String isbn) throws NegocioException {
+        if (isbn == null || isbn.isEmpty()) {
+            throw new NegocioException("Campo ISBN nao informado");
+        }
+        Livro livro = livroDao.procurarPorIsbn(isbn);
+        if (livro == null) {
+            throw new NegocioException("Livro nao encontrado");
+        }
+        return (livro);
+    }
     
     public List<Livro> procurarNome(String nome) throws NegocioException {
         if (nome == null || nome.isEmpty()) {
