@@ -126,7 +126,7 @@ public class LivroUI {
             }
 
             livroNegocio.atualizar(liv);
-            System.out.println("Cliente " + liv.getNome() + " atualizado com sucesso!");
+            System.out.println("Livro " + liv.getNome() + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         } catch (ParseException ex) {
@@ -147,11 +147,10 @@ public class LivroUI {
     private void mostrarLivro(Livro l) {
         System.out.println("-----------------------------");
         System.out.println("Livro");
-        System.out.println("ISBN: " + l.getIsbn());
         System.out.println("Nome: " + l.getNome());
         System.out.println("Autor: " + l.getAutor());
         System.out.println("Editora: " + l.getEditora());
-        System.out.println("Ano: " + l.getAno());
+        System.out.println("Ano: " + DateUtil.yearToString(l.getAno()));
         System.out.println("-----------------------------");
     }
 

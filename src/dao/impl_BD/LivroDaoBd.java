@@ -60,6 +60,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
             //Trabalhando com data: lembrando dataUtil -> dataSql
             java.sql.Date dataSql = new java.sql.Date(livro.getAno().getTime());
             comando.setDate(4, dataSql);
+            comando.setString(5, livro.getIsbn());
             comando.executeUpdate();
 
         } catch (SQLException ex) {

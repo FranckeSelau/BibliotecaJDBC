@@ -34,7 +34,7 @@ public class LivroNegocio {
         if (livro == null || livro.getNome() == null) {
             throw new NegocioException("Livro nao existe!");
         }
-        this.validarCamposObrigatorios(livro);
+        this.validarCamposAtualizador(livro);
         livroDao.atualizar(livro);
     } 
     
@@ -66,6 +66,20 @@ public class LivroNegocio {
             throw new NegocioException("Campo ISBN nao informado");
         }
 
+        if (l.getNome() == null || l.getNome().isEmpty()) {
+            throw new NegocioException("Campo nome nao informado");
+        }
+        
+        if (l.getAutor() == null || l.getAutor().isEmpty()) {
+            throw new NegocioException("Campo Autor nao informado");
+        }
+
+        if (l.getEditora() == null || l.getEditora().isEmpty()) {
+            throw new NegocioException("Campo Editora nao informado");
+        }        
+    }
+    
+    private void validarCamposAtualizador(Livro l) throws NegocioException {
         if (l.getNome() == null || l.getNome().isEmpty()) {
             throw new NegocioException("Campo nome nao informado");
         }
