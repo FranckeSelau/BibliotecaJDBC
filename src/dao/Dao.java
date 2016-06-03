@@ -13,5 +13,5 @@ public interface Dao<T> {
     public void deletar(T objeto);
     public void atualizar(T objeto);
     public List<T> listar();
-    public T procurarPorMatricula(int matricula);
+    public T procurarPorId(int matricula);
 }

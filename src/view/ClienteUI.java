@@ -87,7 +87,7 @@ public class ClienteUI {
         mostrarClientes();
         int matricula = Console.scanInt("\nMatrícula do cliente a ser deletado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
+            Cliente cli = clienteNegocio.procurarMatricula(matricula);
             this.mostrarCliente(cli);
             if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
                 clienteNegocio.deletar(cli);
@@ -106,7 +106,7 @@ public class ClienteUI {
         mostrarClientes();
         int matricula = Console.scanInt("\nMatrícula do Cliente a ser alterado: ");
         try {
-            Cliente cli = clienteNegocio.procurarMatricula1(matricula);
+            Cliente cli = clienteNegocio.procurarMatricula(matricula);
             this.mostrarCliente(cli);
 
             System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");

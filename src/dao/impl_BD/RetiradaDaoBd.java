@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Retirada;
 import negocio.LivroNegocio;
+import negocio.ClienteNegocio;
 import negocio.NegocioException;
 import view.UIUtil;
 
@@ -16,6 +17,7 @@ import view.UIUtil;
 public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
     
     private LivroNegocio livroNegocio;
+    private ClienteNegocio clienteNegocio;
 
     @Override
     public void salvar(Retirada retirada) {
@@ -121,13 +123,11 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
                 
                 Retirada ret;
                 try {
-                    ret = new Retirada(id, dataUtilRetirada, dataUtilDevolvido, dataUtilEntrega, procurarPorMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), livroDevolvido);
+                    ret = new Retirada(id, dataUtilRetirada, dataUtilDevolvido, dataUtilEntrega, clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), livroDevolvido);
                     listaRetiradas.add(ret);
                 } catch (NegocioException ex) {
                     UIUtil.mostrarErro(ex.getMessage());
-                }
-
-                
+                }                
             }
 
         } catch (SQLException ex) {
@@ -139,7 +139,7 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
         return (listaRetiradas);
     }
     
-    @Override
+    /*@Override
     public List<Cliente> procurarPorNomeLista(String nome) {
         List<Cliente> listaCliente = new ArrayList<>();
         String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
@@ -166,35 +166,51 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
             fecharConexao();
         }
         return (listaCliente);
-    }
+    }*/
 
     @Override
-    public Cliente procurarPorMatricula(int matricula) {
-        String sql = "SELECT * FROM cliente WHERE matricula = ?";
+    public Retirada procurarPorId(int id) {
+        String sql = "SELECT * FROM retirada WHERE id = ?";
 
         try {
             conectar(sql);
-            comando.setInt(1, matricula);
+            comando.setInt(1, id);
 
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
-                String nome = resultado.getString("nome");
-                String telefone = resultado.getString("telefone");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                java.sql.Date dataSqlRetirada = resultado.getDate("dataRetirada");
+                java.util.Date dataUtilRetirada = new java.util.Date(dataSqlRetirada.getTime());
+                java.sql.Date dataSqlDevolvido = resultado.getDate("dataDevolvido");
+                java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());
+                java.sql.Date dataSqlEntrega = resultado.getDate("dataEntrega");
+                java.util.Date dataUtilEntrega = new java.util.Date(dataSqlEntrega.getTime());
+                int matricula = resultado.getInt("matricula");
+                String isbn = resultado.getString("isbn");
+                Boolean livroDevolvido = resultado.getBoolean("livroDevolvido");
                 
-                Cliente cli = new Cliente(matricula, nome, telefone);
-
-                return cli;
-
+                Retirada ret;
+                
+                   ret = new Retirada(id, dataUtilRetirada, dataUtilDevolvido, dataUtilEntrega, clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), livroDevolvido);
+                   
+                return ret;
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar o paciente pelo id do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar o retirada pelo id do Banco de Dados!");
             throw new RuntimeException(ex);
+        } catch (NegocioException ex) {
+            Logger.getLogger(RetiradaDaoBd.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             fecharConexao();
         }
 
         return (null);
+    }
+
+    @Override
+    public List<Retirada> procurarPorNomeLista(String nome) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

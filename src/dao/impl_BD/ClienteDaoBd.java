@@ -15,7 +15,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
         try {
             String sql = "INSERT INTO cliente (nome, telefone)"
                     + "VALUES (?,?)";
-            conectarObtendoMatricula(sql);
+            conectarObtendoId(sql);
             comando.setString(1, cliente.getNome());
             comando.setString(2, cliente.getTelefone());
             comando.executeUpdate();
@@ -133,7 +133,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     }
 
     @Override
-    public Cliente procurarPorMatricula(int matricula) {
+    public Cliente procurarPorId(int matricula) {
         String sql = "SELECT * FROM cliente WHERE matricula = ?";
 
         try {

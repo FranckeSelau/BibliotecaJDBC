@@ -37,11 +37,11 @@ public class ClienteNegocio {
         clienteDao.atualizar(cliente);
     }
 
-        public Cliente procurarMatricula1(int matricula) throws NegocioException {
+        public Cliente procurarMatricula(int matricula) throws NegocioException {
         if (matricula == 0) {
             throw new NegocioException("Campo Matrícula nao informado");
         }
-        Cliente cliente = clienteDao.procurarPorMatricula(matricula);
+        Cliente cliente = clienteDao.procurarPorId(matricula);
         if (cliente == null) {
             throw new NegocioException("Cliente nao encontrado");
         }

@@ -139,7 +139,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 
     /*
     @Override
-    public Cliente procurarPorMatricula(int matricula) {
+    public Cliente procurarPorId(int matricula) {
         String sql = "SELECT * FROM cliente WHERE matricula = ?";
 
         try {
@@ -170,7 +170,7 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 */
 
     @Override
-    public Livro procurarPorMatricula(int matricula) {
+    public Livro procurarPorId(int matricula) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
