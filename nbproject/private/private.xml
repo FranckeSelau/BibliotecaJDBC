@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/sql/sql.txt</file>
+            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/view/RetiradaUI.java</file>
             <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/Sistema/Sistema.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/dao/impl_BD/RetiradaDaoBd.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/model/Retirada.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/dao/impl_BD/ClienteDaoBd.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/view/LivroUI.java</file>
-            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/dao/impl_BD/LivroDaoBd.java</file>
+            <file>file:/C:/@Faculdade%20Senac%20-%20ADS/ADS%20-%203º%20Semestre/LabProgramacao2%20-%20Ries/GrudBiblioteca/src/view/ClienteUI.java</file>
         </group>
     </open-files>
 </project-private>
