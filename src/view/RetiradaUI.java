@@ -103,6 +103,7 @@ public class RetiradaUI {
      * @param matricula, insere matrícula de um cliente.
      * @return cliente selecionado.
      */
+    /*
     private Cliente getCliente(int matricula) throws Exception {
         Cliente cliente = this.clienteNegocio.procurarMatricula(matricula);
         if (cliente == null) {
@@ -117,7 +118,7 @@ public class RetiradaUI {
      * 
      * @param isbn, insere isbn de um livro.
      * @return livro selecionado.
-     */
+     *//*
     private Livro getLivro(String isbn) throws Exception {
         Livro livro = this.livroNegocio.procurarPorIsbn(isbn);
         if (livro == null) {
@@ -125,7 +126,7 @@ public class RetiradaUI {
         }
         System.out.println("Livro selecionado: " + livro.getNome());
         return livro;
-    }
+    }*/
 
     public void mostrarRetirada() {
         List<Retirada> listaRetiradas = retiradaNegocio.listar();

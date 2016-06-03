@@ -111,11 +111,11 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
             while (resultado.next()) {
                 int id = resultado.getInt("id");
                 //Trabalhando com data: lembrando dataSql -> dataUtil
-                java.sql.Date dataSqlRetirada = resultado.getDate("dataRetirada");
+                java.sql.Date dataSqlRetirada = resultado.getDate("retirada");
                 java.util.Date dataUtilRetirada = new java.util.Date(dataSqlRetirada.getTime());
-                java.sql.Date dataSqlDevolvido = resultado.getDate("dataDevolvido");
+                java.sql.Date dataSqlDevolvido = resultado.getDate("devolvido");
                 java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());
-                java.sql.Date dataSqlEntrega = resultado.getDate("dataEntrega");
+                java.sql.Date dataSqlEntrega = resultado.getDate("entrega");
                 java.util.Date dataUtilEntrega = new java.util.Date(dataSqlEntrega.getTime());
                 int matricula = resultado.getInt("matricula");
                 String isbn = resultado.getString("isbn");
@@ -131,7 +131,7 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar os clientes do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar os retiradas do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
