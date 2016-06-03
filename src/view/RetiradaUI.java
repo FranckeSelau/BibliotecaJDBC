@@ -6,9 +6,10 @@ import java.util.InputMismatchException;
 import model.Cliente;
 import model.Livro;
 import model.Retirada;
-import repositorio.RepositorioClientes;
-import repositorio.RepositorioLivros;
-import repositorio.RepositorioRetirada;
+import negocio.ClienteNegocio;
+import negocio.LivroNegocio;
+import negocio.NegocioException;
+import negocio.RetiradaNegocio;
 import util.Console;
 import view.menu.RetiradaMenu;
 
@@ -22,7 +23,9 @@ public class RetiradaUI {
 
     private Retirada retirada;
     private RetiradaDao retiradaDao;
-    
+    private ClienteNegocio clienteNegocio;
+    private LivroNegocio livroNegocio;
+    private RetiradaNegocio retiradaNegocio;
      /**
      * Construtor para inicializar Menu Retirada de Livros
      *
@@ -72,26 +75,17 @@ public class RetiradaUI {
      */
     private void retirarLivro() throws Exception {
         try {
-            //Busca o cliente pela matrícula
-            String matricula = Console.scanString("Informe a matrícula do usuario: ");
-            Cliente cliente = getCliente(matricula);
-            //Busca o livro pela isbn
+            long DAY_IN_MS = 1000 * 60 * 60 * 24; // formatar data entrega
+            int matricula = Console.scanInt("Informe a matrícula do usuario: ");
             String isbn = Console.scanString("ISBN do livro a ser retirado: ");
-            Livro livro = getLivro(Integer.parseInt(isbn));
-            //Valida se o livro a ser retirado está disponível
+        try {
+            retiradaNegocio.salvar(new Retirada(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), Boolean.FALSE));
+            System.out.println("Retirada cadastrado com sucesso!");
+        } catch (NegocioException ex) {
+            UIUtil.mostrarErro(ex.getMessage());
+        }
             
-            retiradaDao.salvar(retirada);
-
-            RetiradaLivro retirada = new RetiradaLivro();
-            retirada.setId(lista.getUltimoId() + 1);
-            retirada.setLivro(livro);
-            retirada.setCliente(cliente);
-            retirada.setRetirada(new Date(System.currentTimeMillis()));
-            Boolean ok = lista.addRetirada(retirada);
-            if (!ok) {
-                throw new Exception("Erro! Livro não disponível para ser emprestado.");
-            }
-            System.out.println("Livro " + livro.getNome() + " emprestado para " + cliente.getNome() + ", devolução em: " + retirada.getEntregaFormatada());
+            System.out.println("Livro " + livroNegocio.procurarPorIsbn(isbn).getNome() + " emprestado para " + clienteNegocio.procurarMatricula(matricula).getNome() + ", devolução em: " + retirada.getEntregaFormatada());
         } catch (InputMismatchException e) {
             System.err.println("ERRO! O ISBN deve ser numérico!");
         }
@@ -103,8 +97,8 @@ public class RetiradaUI {
      * @param matricula, insere matrícula de um cliente.
      * @return cliente selecionado.
      */
-    private Cliente getCliente(String matricula) throws Exception {
-        Cliente cliente = this.clientes.buscarCliente(matricula);
+    private Cliente getCliente(int matricula) throws Exception {
+        Cliente cliente = this.clienteNegocio.procurarMatricula(matricula);
         if (cliente == null) {
             throw new Exception("Erro! Cliente não encontrado.");
         }
@@ -118,8 +112,8 @@ public class RetiradaUI {
      * @param isbn, insere isbn de um livro.
      * @return livro selecionado.
      */
-    private Livro getLivro(int isbn) throws Exception {
-        Livro livro = this.livros.buscarLivro(isbn);
+    private Livro getLivro(String isbn) throws Exception {
+        Livro livro = this.livroNegocio.procurarPorIsbn(isbn);
         if (livro == null) {
             throw new Exception("Erro! Livro não encontrado.");
         }

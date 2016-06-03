@@ -5,8 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Classe para objetos do tipo retirada de livros, onde são instanciados os eventos de retiradas
- * Implementa FrameWork CompareTo
+ * Classe para objetos do tipo retirada de livros, onde são instanciados os
+ * eventos de retiradas Implementa FrameWork CompareTo
+ *
  * @author Francke
  * @since JDK 1.0
  */
@@ -20,7 +21,7 @@ public class Retirada implements Comparable<Retirada> {
     private Cliente cliente;
     private Livro livro;
     private Boolean livroDevolvido = false;
-    
+
     public Retirada(int id, Date retirada, Date devolvido, Date entrega, Cliente cliente, Livro livro, Boolean livroDevolvido) {
         this.id = id;
         this.retirada = retirada;
@@ -29,7 +30,17 @@ public class Retirada implements Comparable<Retirada> {
         this.cliente = cliente;
         this.livro = livro;
         this.livroDevolvido = livroDevolvido;
-        
+    }
+
+    public Retirada(Date retirada, Date devolvido, Date entrega, Cliente cliente, Livro livro, Boolean livroDevolvido) {
+        this.id = id;
+        this.retirada = retirada;
+        this.devolvido = devolvido;
+        this.entrega = entrega;
+        this.cliente = cliente;
+        this.livro = livro;
+        this.livroDevolvido = livroDevolvido;
+
     }
 
     /**
@@ -158,7 +169,7 @@ public class Retirada implements Comparable<Retirada> {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return df.format(retirada);
     }
-    
+
     /**
      * Recebe data da Retirada atual
      *
@@ -213,7 +224,7 @@ public class Retirada implements Comparable<Retirada> {
     public int compareTo(Retirada o) {
         return (this.getEntrega().compareTo(o.getEntrega()));
     }
-    
+
     /**
      * Retorna horário atual.
      *
