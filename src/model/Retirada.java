@@ -13,12 +13,24 @@ import java.util.Date;
 public class Retirada implements Comparable<Retirada> {
 
     private int id;
+
     private Date retirada;
     private Date devolvido;
     private Date entrega;
     private Cliente cliente;
     private Livro livro;
     private Boolean livroDevolvido = false;
+    
+    public Retirada(int id, Date retirada, Date devolvido, Date entrega, Cliente cliente, Livro livro, Boolean livroDevolvido) {
+        this.id = id;
+        this.retirada = retirada;
+        this.devolvido = devolvido;
+        this.entrega = entrega;
+        this.cliente = cliente;
+        this.livro = livro;
+        this.livroDevolvido = livroDevolvido;
+        
+    }
 
     /**
      * Construtor para a data de entrega de um livo, automaticamente 7 dias

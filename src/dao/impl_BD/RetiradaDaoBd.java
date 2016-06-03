@@ -5,33 +5,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Retirada;
+import negocio.LivroNegocio;
+import negocio.NegocioException;
+import view.UIUtil;
+
 
 public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
+    
+    private LivroNegocio livroNegocio;
 
     @Override
     public void salvar(Retirada retirada) {
-        int matricula = 0;
+        int id = 0;
         try {
-            String sql = "INSERT INTO retirada (nome, telefone)"
-                    + "VALUES (?,?)";
+            String sql = "INSERT INTO retirada (retirada, devolvido, entrega, matricula, isbn, livroDevolvido)"
+                    + "VALUES (?,?,?,?,?,?)";
             conectarObtendoId(sql);
-            comando.setString(1, retirada.getNome());
-            comando.setString(2, retirada.getTelefone());
+            java.sql.Date dataSqlRetirada = new java.sql.Date(retirada.getRetirada().getTime());
+            comando.setDate(1, dataSqlRetirada);
+            java.sql.Date dataSqldevolvido = new java.sql.Date(retirada.getDevolvido().getTime());
+            comando.setDate(2, dataSqldevolvido);
+            java.sql.Date dataSqlEntrega = new java.sql.Date(retirada.getEntrega().getTime());
+            comando.setDate(3, dataSqlEntrega);
+            comando.setInt(4, retirada.getCliente().getMatricula());
+            comando.setString(5, retirada.getLivro().getIsbn());
             comando.executeUpdate();
             //Obtém o resultSet para pegar a matricula
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 //seta a matricula para o objeto
-                matricula = resultado.getInt(1);
-                retirada.setMatricula(matricula);
+                id = resultado.getInt(1);
+                retirada.setId(id);
             }
             else{
-                System.err.println("Erro de Sistema - Nao gerou amatricula conforme esperado!");
-                throw new BDException("Nao gerou a matrícula conforme esperado!");
+                System.err.println("Erro de Sistema - Nao gerou Id conforme esperado!");
+                throw new BDException("Nao gerou a Id conforme esperado!");
             }
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao salvar cliente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao salvar retirada no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -39,15 +53,15 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
     }
 
     @Override
-    public void deletar(Cliente cliente) {
+    public void deletar(Retirada retirada) {
         try {
-            String sql = "DELETE FROM cliente WHERE matricula = ?";
+            String sql = "DELETE FROM retirada WHERE id = ?";
             conectar(sql);
-            comando.setInt(1, cliente.getMatricula());
+            comando.setInt(1, retirada.getId());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao deletar cliente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao deletar retirada no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -55,19 +69,27 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
     }
 
     @Override
-    public void atualizar(Cliente cliente) {
+    public void atualizar(Retirada retirada) {
         try {
-            String sql = "UPDATE cliente SET nome=?, telefone=? "
-                    + "WHERE matricula=?";
+            String sql = "UPDATE retirada SET retirada=?, devolvido=?, entrega=?, matricula=?, isbn=?, livroDevolvido=?"
+                    + "WHERE id=?";
             
             conectar(sql);
-            comando.setString(1, cliente.getNome());
-            comando.setString(2, cliente.getTelefone());
-            comando.setInt(3, cliente.getMatricula());
+            //Trabalhando com data: lembrando dataUtil -> dataSql
+            java.sql.Date dataSqlRetirada = new java.sql.Date(retirada.getRetirada().getTime());
+            comando.setDate(1, dataSqlRetirada);
+            java.sql.Date dataSqldevolvido = new java.sql.Date(retirada.getDevolvido().getTime());
+            comando.setDate(2, dataSqldevolvido);
+            java.sql.Date dataSqlEntrega = new java.sql.Date(retirada.getEntrega().getTime());
+            comando.setDate(3, dataSqlEntrega);
+            comando.setInt(4, retirada.getCliente().getMatricula());
+            comando.setString(5, retirada.getLivro().getIsbn());
+            comando.setBoolean(6, retirada.getLivroDevolvido());
+            comando.setInt(7, retirada.getId());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao atualizar este cliente no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao atualizar esta retirada no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -75,23 +97,37 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
     }
 
     @Override
-    public List<Cliente> listar() {
-        List<Cliente> listaClientes = new ArrayList<>();
+    public List<Retirada> listar() {
+        List<Retirada> listaRetiradas = new ArrayList<>();
 
-        String sql = "SELECT * FROM cliente";
+        String sql = "SELECT * FROM retirada";
 
         try {
             conectar(sql);
             ResultSet resultado = comando.executeQuery();
 
             while (resultado.next()) {
+                int id = resultado.getInt("id");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                java.sql.Date dataSqlRetirada = resultado.getDate("dataRetirada");
+                java.util.Date dataUtilRetirada = new java.util.Date(dataSqlRetirada.getTime());
+                java.sql.Date dataSqlDevolvido = resultado.getDate("dataDevolvido");
+                java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());
+                java.sql.Date dataSqlEntrega = resultado.getDate("dataEntrega");
+                java.util.Date dataUtilEntrega = new java.util.Date(dataSqlEntrega.getTime());
                 int matricula = resultado.getInt("matricula");
-                String nome = resultado.getString("nome");
-                String telefone = resultado.getString("telefone");
+                String isbn = resultado.getString("isbn");
+                Boolean livroDevolvido = resultado.getBoolean("livroDevolvido");
                 
-                Cliente cli = new Cliente(matricula, nome, telefone);
+                Retirada ret;
+                try {
+                    ret = new Retirada(id, dataUtilRetirada, dataUtilDevolvido, dataUtilEntrega, procurarPorMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), livroDevolvido);
+                    listaRetiradas.add(ret);
+                } catch (NegocioException ex) {
+                    UIUtil.mostrarErro(ex.getMessage());
+                }
 
-                listaClientes.add(cli);
+                
             }
 
         } catch (SQLException ex) {
@@ -100,7 +136,7 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
         } finally {
             fecharConexao();
         }
-        return (listaClientes);
+        return (listaRetiradas);
     }
     
     @Override
