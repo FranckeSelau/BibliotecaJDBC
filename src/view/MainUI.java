@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import model.Cliente;
 import model.Livro;
+import model.Retirada;
 
 import util.Console;
 import view.menu.MainMenu;
@@ -18,6 +19,7 @@ public class MainUI {
 
     private Cliente cliente;
     private Livro livro;
+    private Retirada retirada;
 
     /**
      * Construtor para Menu Principal
@@ -48,7 +50,7 @@ public class MainUI {
                     new LivroUI(livro).menu();
                     break;
                 case MainMenu.OP_RETIRA:
-                    //  
+                    new RetiradaUI(retirada).executar();
                     break;
                 case MainMenu.OP_DEVOLUCAO:
                     //                  

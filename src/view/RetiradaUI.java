@@ -3,6 +3,7 @@ package view;
 import dao.RetiradaDao;
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.List;
 import model.Cliente;
 import model.Livro;
 import model.Retirada;
@@ -32,7 +33,12 @@ public class RetiradaUI {
      * @param retirada
      * 
      */
+    public RetiradaUI() {
+        retiradaNegocio = new RetiradaNegocio();
+    }
+    
     public RetiradaUI(Retirada retirada) {
+        this(); // chama o construtor acima "ClienteUI()" que está sem parametro
         this.retirada = retirada;        
     }
 
@@ -65,7 +71,7 @@ public class RetiradaUI {
 
                 }
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                System.err.println("Erro a ser decoberto");
             }
         } while (opcao != RetiradaMenu.OP_VOLTAR);
     }
@@ -77,15 +83,15 @@ public class RetiradaUI {
         try {
             long DAY_IN_MS = 1000 * 60 * 60 * 24; // formatar data entrega
             int matricula = Console.scanInt("Informe a matrícula do usuario: ");
-            String isbn = Console.scanString("ISBN do livro a ser retirado: ");
+            int isbn = Console.scanInt("ISBN do livro a ser retirado: ");
         try {
-            retiradaNegocio.salvar(new Retirada(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(isbn), Boolean.FALSE));
+            retiradaNegocio.salvar(new Retirada(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(Integer.toString(isbn)), Boolean.FALSE));
             System.out.println("Retirada cadastrado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
             
-            System.out.println("Livro " + livroNegocio.procurarPorIsbn(isbn).getNome() + " emprestado para " + clienteNegocio.procurarMatricula(matricula).getNome() + ", devolução em: " + retirada.getEntregaFormatada());
+            System.out.println("Livro " + livroNegocio.procurarPorIsbn(Integer.toString(isbn)).getNome() + " emprestado para " + clienteNegocio.procurarMatricula(matricula).getNome() + ", devolução em: " + retirada.getEntregaFormatada());
         } catch (InputMismatchException e) {
             System.err.println("ERRO! O ISBN deve ser numérico!");
         }
@@ -121,12 +127,17 @@ public class RetiradaUI {
         return livro;
     }
 
+    public void mostrarRetirada() {
+        List<Retirada> listaRetiradas = retiradaNegocio.listar();
+        this.mostrarRetirada(listaRetiradas);
+    }
+
     /**
      * Mostra retirada dos Clientes.
      *
      * imprime as retiradas dos clientes formatados em Strings
      */
-    public void mostrarRetirada() {
+    public void mostrarRetirada(List<Retirada> listaRetiradas) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ID") + "\t"
                 + String.format("%-20s", "|LIVRO") + "\t"
@@ -136,7 +147,7 @@ public class RetiradaUI {
                 + String.format("%-20s", "|ENTREGA") + "\t"
                 + String.format("%-20s", "|DEVOLVIDO")
         );
-        for (RetiradaLivro retirada : lista.getListaDeRetiradas()) {
+        for (Retirada retirada : listaRetiradas) {
             String disponivel = retirada.getLivroDevolvido() ? "Sim" : "Não";
             System.out.println(String.format("%-10s", retirada.getId()) + "\t"
                     + String.format("%-20s", "|" + retirada.getLivro().getNome()) + "\t"
