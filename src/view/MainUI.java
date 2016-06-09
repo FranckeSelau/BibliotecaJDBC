@@ -25,7 +25,7 @@ public class MainUI {
      * Construtor para Menu Principal
      */
     public MainUI() {
-
+        retirada = new Retirada();
     }
 
     /**
@@ -53,7 +53,7 @@ public class MainUI {
                     new RetiradaUI(retirada).executar();
                     break;
                 case MainMenu.OP_DEVOLUCAO:
-                    //                  
+                    new DevolucaoUI().executar();                 
                     break;
                 case MainMenu.OP_RELATORIOS:
                     //    

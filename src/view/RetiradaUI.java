@@ -27,19 +27,22 @@ public class RetiradaUI {
     private ClienteNegocio clienteNegocio;
     private LivroNegocio livroNegocio;
     private RetiradaNegocio retiradaNegocio;
-     /**
+
+    /**
      * Construtor para inicializar Menu Retirada de Livros
      *
      * @param retirada
-     * 
+     *
      */
     public RetiradaUI() {
         retiradaNegocio = new RetiradaNegocio();
+        clienteNegocio = new ClienteNegocio();
+        livroNegocio = new LivroNegocio();
     }
-    
+
     public RetiradaUI(Retirada retirada) {
         this(); // chama o construtor acima "ClienteUI()" que está sem parametro
-        this.retirada = retirada;        
+        this.retirada = retirada;
     }
 
     /**
@@ -71,7 +74,8 @@ public class RetiradaUI {
 
                 }
             } catch (Exception e) {
-                System.err.println("Erro a ser decoberto");
+                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
         } while (opcao != RetiradaMenu.OP_VOLTAR);
     }
@@ -84,13 +88,13 @@ public class RetiradaUI {
             long DAY_IN_MS = 1000 * 60 * 60 * 24; // formatar data entrega
             int matricula = Console.scanInt("Informe a matrícula do usuario: ");
             int isbn = Console.scanInt("ISBN do livro a ser retirado: ");
-        try {
-            retiradaNegocio.salvar(new Retirada(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(Integer.toString(isbn)), Boolean.FALSE));
-            System.out.println("Retirada cadastrado com sucesso!");
-        } catch (NegocioException ex) {
-            UIUtil.mostrarErro(ex.getMessage());
-        }
-            
+            try {
+                retiradaNegocio.salvar(new Retirada(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), new Date(System.currentTimeMillis() + (7 * DAY_IN_MS)), clienteNegocio.procurarMatricula(matricula), livroNegocio.procurarPorIsbn(Integer.toString(isbn)), Boolean.FALSE));
+                System.out.println("Retirada cadastrado com sucesso!");
+            } catch (NegocioException ex) {
+                UIUtil.mostrarErro(ex.getMessage());
+            }
+
             System.out.println("Livro " + livroNegocio.procurarPorIsbn(Integer.toString(isbn)).getNome() + " emprestado para " + clienteNegocio.procurarMatricula(matricula).getNome() + ", devolução em: " + retirada.getEntregaFormatada());
         } catch (InputMismatchException e) {
             System.err.println("ERRO! O ISBN deve ser numérico!");
@@ -99,34 +103,34 @@ public class RetiradaUI {
 
     /**
      * Retorna cliente através da matrícula.
-     * 
+     *
      * @param matricula, insere matrícula de um cliente.
      * @return cliente selecionado.
      */
     /*
-    private Cliente getCliente(int matricula) throws Exception {
-        Cliente cliente = this.clienteNegocio.procurarMatricula(matricula);
-        if (cliente == null) {
-            throw new Exception("Erro! Cliente não encontrado.");
-        }
-        System.out.println("Cliente selecionado: " + cliente.getNome());
-        return cliente;
-    }
+     private Cliente getCliente(int matricula) throws Exception {
+     Cliente cliente = this.clienteNegocio.procurarMatricula(matricula);
+     if (cliente == null) {
+     throw new Exception("Erro! Cliente não encontrado.");
+     }
+     System.out.println("Cliente selecionado: " + cliente.getNome());
+     return cliente;
+     }
 
-    /**
+     /**
      * Retorna livro através da ISBN.
      * 
      * @param isbn, insere isbn de um livro.
      * @return livro selecionado.
      *//*
-    private Livro getLivro(String isbn) throws Exception {
-        Livro livro = this.livroNegocio.procurarPorIsbn(isbn);
-        if (livro == null) {
-            throw new Exception("Erro! Livro não encontrado.");
-        }
-        System.out.println("Livro selecionado: " + livro.getNome());
-        return livro;
-    }*/
+     private Livro getLivro(String isbn) throws Exception {
+     Livro livro = this.livroNegocio.procurarPorIsbn(isbn);
+     if (livro == null) {
+     throw new Exception("Erro! Livro não encontrado.");
+     }
+     System.out.println("Livro selecionado: " + livro.getNome());
+     return livro;
+     }*/
 
     public void mostrarRetirada() {
         List<Retirada> listaRetiradas = retiradaNegocio.listar();

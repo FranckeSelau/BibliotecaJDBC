@@ -52,5 +52,8 @@ public class RetiradaNegocio {
         if (r.getCliente() == null) {
             throw new NegocioException("Campo Cliente nao informado");
         }
+        
+        
+        
     }
 }

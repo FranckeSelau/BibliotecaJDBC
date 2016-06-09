@@ -37,7 +37,7 @@ public class ClienteNegocio {
         clienteDao.atualizar(cliente);
     }
 
-        public Cliente procurarMatricula(int matricula) throws NegocioException {
+   public Cliente procurarMatricula(int matricula) throws NegocioException {
         if (matricula == 0) {
             throw new NegocioException("Campo Matrícula nao informado");
         }

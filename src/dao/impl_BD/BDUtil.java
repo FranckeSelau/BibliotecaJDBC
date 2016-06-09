@@ -6,11 +6,12 @@ import java.sql.SQLException;
 
 public class BDUtil {
     private final static String HOST = "localhost";
-    private final static String PORT = "5432";
-    private final static String BD = "postgres";
-    private final static String URL = "jdbc:postgresql://"+HOST+":"+PORT+"/"+BD; // caminho do JDBC
-    private final static String USUARIO = "postgres";
-    private final static String SENHA = "123456";
+    private final static String PORT = "3306";
+    private final static String BD = "biblioteca";
+    //jdbc:mysql://localhost:3306/biblioteca?zeroDateTimeBehavior=convertToNull [root on Default schema]
+    private final static String URL = "jdbc:mysql://"+HOST+":"+PORT+"/"+BD+"?zeroDateTimeBehavior=convertToNull"; // caminho do JDBC
+    private final static String USUARIO = "root";
+    private final static String SENHA = "root";
     
     public static Connection getConnection(){
         Connection conexao = null;
