@@ -9,9 +9,13 @@ import dao.DevolucaoDao;
 import static dao.impl_BD.DaoBd.comando;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.Devolucao;
 import model.Retirada;
+import negocio.ClienteNegocio;
+import negocio.NegocioException;
+import view.UIUtil;
 
 /**
  *
@@ -19,6 +23,7 @@ import model.Retirada;
  */
 public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
     
+    private ClienteNegocio clienteNegocio = new ClienteNegocio();
     
     public void salvar(Retirada retirada) {
         int id = 0;
@@ -68,7 +73,38 @@ public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
 
     @Override
     public List<Devolucao> listar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Devolucao> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM devolucao";
+
+        try {
+            conectar(sql);
+            ResultSet resultado = comando.executeQuery();
+            RetiradaDaoBd retiradaDao = new RetiradaDaoBd();
+            while (resultado.next()) {
+                int id = resultado.getInt("id");
+                //Trabalhando com data: lembrando dataSql -> dataUtil
+                int idRetirada = resultado.getInt("retirada");
+                Retirada retirada = retiradaDao.procurarPorId(idRetirada);
+                java.sql.Date dataSqlDevolvido = resultado.getDate("devolvido");
+                java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());
+                
+                
+                try {
+                    Devolucao dev = new Devolucao(id, retirada, dataUtilDevolvido);
+                    lista.add(dev);
+                } catch (Exception ex) {
+                    UIUtil.mostrarErro(ex.getMessage());
+                }                
+            }
+
+        } catch (SQLException ex) {
+            System.err.println("Erro de Sistema - Problema ao buscar os retiradas do Banco de Dados!");
+            throw new RuntimeException(ex);
+        } finally {
+            fecharConexao();
+        }
+        return (lista);
     }
 
     @Override

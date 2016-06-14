@@ -16,6 +16,13 @@ public class Devolucao {
 
     private Retirada retirada;
     private Date devolvido;
+    
+    public Devolucao(int id, Retirada retirada, Date devolvido){
+        this.id = id;
+        this.retirada = retirada;
+        this.devolvido = devolvido;
+        
+    }
    
 
     public int getId() {
