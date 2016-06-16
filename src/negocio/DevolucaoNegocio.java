@@ -23,7 +23,7 @@ public class DevolucaoNegocio {
         devolucaoDao = new DevolucaoDaoBd();
     }
     
-    public void salvar(Retirada r){
+    public void salvar(Retirada r) throws Exception{
         devolucaoDao.salvar(r);
     }
     

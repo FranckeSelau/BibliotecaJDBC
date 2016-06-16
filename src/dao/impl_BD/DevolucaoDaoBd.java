@@ -25,10 +25,27 @@ public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
     
     private ClienteNegocio clienteNegocio = new ClienteNegocio();
     
-    public void salvar(Retirada retirada) {
+    public void salvar(Retirada retirada) throws Exception {
         int id = 0;
         try {
-            String sql = "INSERT INTO devolucao (retirada, devolvido)"
+            String sql = "select * from view_livros_disponiveis where isbn = ? and diferenca = 0";
+            conectarObtendoId(sql);
+            comando.setString(1, retirada.getLivro().getIsbn());
+            ResultSet resultado = comando.executeQuery();
+            
+            if(resultado.next()){
+                throw new Exception("Este livro consta na nossa lista de livros disponíveis, não pode ser devolvido.");
+            }
+            
+            sql = "select * from devolucao where retirada = ?";
+            conectarObtendoId(sql);
+            comando.setInt(1, retirada.getId());
+            resultado = comando.executeQuery();
+            if(resultado.next()){
+                throw new Exception("Este livro consta como devolvido.");
+            }
+            
+            sql = "INSERT INTO devolucao (retirada, devolvido)"
                     + "VALUES (?,?)";
             conectarObtendoId(sql);
             
@@ -38,7 +55,7 @@ public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
            
             comando.executeUpdate();
             //Obtém o resultSet para pegar a matricula
-            ResultSet resultado = comando.getGeneratedKeys();
+            resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 //seta a matricula para o objeto
                 id = resultado.getInt(1);

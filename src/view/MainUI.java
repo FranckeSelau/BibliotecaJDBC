@@ -56,7 +56,7 @@ public class MainUI {
                     new DevolucaoUI().executar();                 
                     break;
                 case MainMenu.OP_RELATORIOS:
-                    //    
+                    new RelatoriosUI().executar();
                     break;
                 case MainMenu.OP_SAIR:
                     System.out.println("Aplicação finalizada!");

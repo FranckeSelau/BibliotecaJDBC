@@ -88,12 +88,12 @@ public class DevolucaoUI {
             Retirada retirada = retiradaDao.procurarPorId(codigo);
             try {
                 devolucaoNegocio.salvar(retirada);
-                System.out.println("Retirada cadastrado com sucesso!");
+                System.out.println("Devolucao cadastrado com sucesso!");
             } catch (Exception ex) {
                 UIUtil.mostrarErro(ex.getMessage());
             }
 
-            System.out.println("Livro " + retirada.getLivro().getNome() + " emprestado para " + retirada.getCliente().getNome() + ", devolução em: " + retirada.getEntregaFormatada());
+            System.out.println("Livro " + retirada.getLivro().getNome() + " devolvido por " + retirada.getCliente().getNome());
         } catch (InputMismatchException e) {
             System.err.println("ERRO! O ISBN deve ser numérico!");
         }

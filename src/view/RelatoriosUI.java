@@ -10,6 +10,11 @@ import java.util.InputMismatchException;
 import java.util.List;
 import model.Cliente;
 import model.Livro;
+import model.ViewClientesMaisAtrasos;
+import model.ViewClientesMaisEmprestimos;
+import model.ViewDisponiveis;
+import model.ViewMaisEmprestados;
+import negocio.RelatorioNegocio;
 import util.Console;
 import util.DateUtil;
 import view.menu.RelatoriosMenu;
@@ -20,6 +25,11 @@ import view.menu.RelatoriosMenu;
  */
 public class RelatoriosUI {   
     
+    private RelatorioNegocio relatorioNegocio;
+    
+    public RelatoriosUI(){
+        this.relatorioNegocio = new RelatorioNegocio();
+    }
 
     /**
      * Executa as opções do Menu Livros.
@@ -46,7 +56,7 @@ public class RelatoriosUI {
                     clientesMaisRetiraram();
                     break;
                 case RelatoriosMenu.OP_RELATORIO_CLIENTES_ATR:
-                    clientesMaisRetiraram();
+                    clientesMaisAtrasaram();
                     break;
                 case RelatoriosMenu.OP_VOLTAR:
                     System.out.println("Retornando ao menu principal..");
@@ -59,19 +69,19 @@ public class RelatoriosUI {
     }
 
     public void livrosDisponiveis() {
-        
+        this.mostrarLivros(this.relatorioNegocio.getLivrosDisponiveis());
     }
 
     public void livrosMaisRetirados() {
-        
+        this.mostrarLivrosRetirados(this.relatorioNegocio.getLivrosMaisEmprestados());
     }
 
     public void clientesMaisRetiraram() {
-        
+        this.mostrarClientes(this.relatorioNegocio.getClientesComMaisEmprestimos());
     }
     
     public void clientesMaisAtrasaram() {
-        
+        this.mostrarClientesAtrasos(this.relatorioNegocio.getClientesComMaisAtrrasos());
     }
 
     /**
@@ -79,19 +89,19 @@ public class RelatoriosUI {
      *
      * imprime os livros formatados em Strings
      */
-    public void mostrarLivros(List<Livro> listaLivrosDisponiveis) {
+    public void mostrarLivros(List<ViewDisponiveis> listaLivrosDisponiveis) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ISBN") + "\t"
                 + String.format("%-20s", "|NOME") + "\t"
                 + String.format("%-20s", "|AUTOR") + "\t"
                 + String.format("%-20s", "|EDITORA") + "\t"
                 + String.format("%-5s", "|ANO"));
-        for (Livro livro : listaLivrosDisponiveis) {
-            System.out.println(String.format("%-10s", livro.getIsbn()) + "\t"
-                    + String.format("%-20s", "|" + livro.getNome()) + "\t"
-                    + String.format("%-20s", "|" + livro.getAutor()) + "\t"
-                    + String.format("%-20s", "|" + livro.getEditora()) + "\t"
-                    + String.format("%-5s", "|" + DateUtil.yearToString(livro.getAno()))); // converte ano data em String
+        for (ViewDisponiveis livro : listaLivrosDisponiveis) {
+            System.out.println(String.format("%-10s", livro.getLivro().getIsbn()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getNome()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getAutor()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getEditora()) + "\t"
+                    + String.format("%-5s", "|" + DateUtil.yearToString(livro.getLivro().getAno()))); // converte ano data em String
         }
     }
 
@@ -100,7 +110,7 @@ public class RelatoriosUI {
      *
      * imprime os livros formatados em Strings
      */
-    public void mostrarLivrosRetirados(List<Livro> listaLivrosDisponiveis) {
+    public void mostrarLivrosRetirados(List<ViewMaisEmprestados> listaLivrosDisponiveis) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ISBN") + "\t"
                 + String.format("%-20s", "|NOME") + "\t"
@@ -108,29 +118,46 @@ public class RelatoriosUI {
                 + String.format("%-20s", "|EDITORA") + "\t"
                 + String.format("%-20s", "|RETIRADAS") + "\t"
                 + String.format("%-5s", "|ANO"));
-        for (Livro livro : listaLivrosDisponiveis) {
-            System.out.println(String.format("%-10s", livro.getIsbn()) + "\t"
-                    + String.format("%-20s", "|" + livro.getNome()) + "\t"
-                    + String.format("%-20s", "|" + livro.getAutor()) + "\t"
-                    + String.format("%-20s", "|" + livro.getEditora()) + "\t"
-                    + String.format("%-20s", "|" + livro.getRetiradas()) + "\t"
-                    + String.format("%-5s", "|" + DateUtil.yearToString(livro.getAno()))); // converte ano data em String
+        for (ViewMaisEmprestados livro : listaLivrosDisponiveis) {
+            System.out.println(String.format("%-10s", livro.getLivro().getIsbn()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getNome()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getAutor()) + "\t"
+                    + String.format("%-20s", "|" + livro.getLivro().getEditora()) + "\t"
+                    + String.format("%-20s", "|" + livro.getQtd()) + "\t"
+                    + String.format("%-5s", "|" + DateUtil.yearToString(livro.getLivro().getAno()))); // converte ano data em String
         }
     }
     
-    public void mostrarClientes(List<Cliente> clientes) {
+    public void mostrarClientes(List<ViewClientesMaisEmprestimos> clientes) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "MATRÍCULA") + "\t"
                 + String.format("%-20s", "|NOME") + "\t"
                 + String.format("%-20s", "|RETIRADAS") + "\t"
+                
+                + String.format("%-20s", "|TELEFONE"));
+        for (ViewClientesMaisEmprestimos cliente : clientes) {
+            System.out.println(String.format("%-10s", cliente.getCliente().getMatricula()) + "\t"
+                    + String.format("%-20s", "|" + cliente.getCliente().getNome()) + "\t"
+                    + String.format("%-20s", "|" + cliente.getQtd()) + "\t"
+                  
+                    + String.format("%-20s", "|" + cliente.getCliente().getTelefone()));
+        }
+    }
+    
+    
+    public void mostrarClientesAtrasos(List<ViewClientesMaisAtrasos> clientes) {
+        System.out.println("--------------------------------------\n");
+        System.out.println(String.format("%-10s", "MATRÍCULA") + "\t"
+                + String.format("%-20s", "|NOME") + "\t"
+               
                 + String.format("%-20s", "|ATRASOS") + "\t"
                 + String.format("%-20s", "|TELEFONE"));
-        for (Cliente cliente : clientes) {
-            System.out.println(String.format("%-10s", cliente.getMatricula()) + "\t"
-                    + String.format("%-20s", "|" + cliente.getNome()) + "\t"
-                    + String.format("%-20s", "|" + cliente.getRetiradas()) + "\t"
-                    + String.format("%-20s", "|" + cliente.getAtrasos()) + "\t"
-                    + String.format("%-20s", "|" + cliente.getTelefone()));
+        for (ViewClientesMaisAtrasos cliente : clientes) {
+            System.out.println(String.format("%-10s", cliente.getCliente().getMatricula()) + "\t"
+                    + String.format("%-20s", "|" + cliente.getCliente().getNome()) + "\t"
+                  
+                    + String.format("%-20s", "|" + cliente.getQtd()) + "\t"
+                    + String.format("%-20s", "|" + cliente.getCliente().getTelefone()));
         }
     }
 }
