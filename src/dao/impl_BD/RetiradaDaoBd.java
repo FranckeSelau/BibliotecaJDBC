@@ -23,7 +23,25 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
     public void salvar(Retirada retirada) {
         int id = 0;
         try {
-            String sql = "INSERT INTO retirada (retirada, devolvido, entrega, matricula, isbn, livroDevolvido)"
+            String sql = "select * from view_livros_disponiveis where isbn = ? and diferenca > 0";
+            conectarObtendoId(sql);
+            comando.setString(1, retirada.getLivro().getIsbn());
+            ResultSet resultado = comando.executeQuery();
+            
+            if(resultado.next()){
+                throw new Exception("Este livro consta na nossa lista de livros emprestados, não pode ser emprestado novamente.");
+            }
+            int matricula = retirada.getCliente().getMatricula();
+            sql = "select * from view_livros_alocados where matricula = ? and alocados >= 1";
+            conectarObtendoId(sql);
+            comando.setInt(1, matricula);
+            resultado = comando.executeQuery();
+            
+            if(resultado.next()){
+                throw new Exception("O cliente já possuí um livro emprestado, não pode retirar mais.");
+            }
+            
+            sql = "INSERT INTO retirada (retirada, devolvido, entrega, matricula, isbn, livroDevolvido)"
                     + "VALUES (?,?,?,?,?,?)";
             conectarObtendoId(sql);
             java.sql.Date dataSqlRetirada = new java.sql.Date(retirada.getRetirada().getTime());
@@ -37,7 +55,7 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
             comando.setString(6, null);
             comando.executeUpdate();
             //Obtém o resultSet para pegar a matricula
-            ResultSet resultado = comando.getGeneratedKeys();
+            resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 //seta a matricula para o objeto
                 id = resultado.getInt(1);
@@ -50,6 +68,8 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
         } catch (SQLException ex) {
             System.err.println("Erro de Sistema - Problema ao salvar retirada no Banco de Dados!");
             throw new RuntimeException(ex);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         } finally {
             fecharConexao();
         }

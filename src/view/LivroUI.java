@@ -170,13 +170,13 @@ public class LivroUI {
         } else {
             System.out.println("--------------------------------------\n");
             System.out.println(String.format("%-10s", "ISBN") + "\t"
-                    + String.format("%-20s", "|NOME") + "\t"
+                    + String.format("%-40s", "|NOME") + "\t"
                     + String.format("%-20s", "|AUTOR") + "\t"
                     + String.format("%-20s", "|EDITORA") + "\t"
                     + String.format("%-5s", "|ANO"));
             for (Livro livro : listaLivros) {
                 System.out.println(String.format("%-10s", livro.getIsbn()) + "\t"
-                        + String.format("%-20s", "|" + livro.getNome()) + "\t"
+                        + String.format("%-40s", "|" + livro.getNome()) + "\t"
                         + String.format("%-20s", "|" + livro.getAutor()) + "\t"
                         + String.format("%-20s", "|" + livro.getEditora()) + "\t"
                         + String.format("%-5s", "|" + DateUtil.yearToString(livro.getAno()))); // converte ano data em String

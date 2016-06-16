@@ -93,12 +93,16 @@ public class RetiradaUI {
                 System.out.println("Retirada cadastrado com sucesso!");
             } catch (NegocioException ex) {
                 UIUtil.mostrarErro(ex.getMessage());
+            }catch (Exception ex) {
+                System.err.println(ex.getMessage());
             }
 
             System.out.println("Livro " + livroNegocio.procurarPorIsbn(Integer.toString(isbn)).getNome() + " emprestado para " + clienteNegocio.procurarMatricula(matricula).getNome() + ", devolução em: " + retirada.getEntregaFormatada());
         } catch (InputMismatchException e) {
             System.err.println("ERRO! O ISBN deve ser numérico!");
-        }
+        }catch (NegocioException ex) {
+                UIUtil.mostrarErro(ex.getMessage());
+            }
     }
 
     /**

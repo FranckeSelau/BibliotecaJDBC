@@ -92,13 +92,13 @@ public class RelatoriosUI {
     public void mostrarLivros(List<ViewDisponiveis> listaLivrosDisponiveis) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ISBN") + "\t"
-                + String.format("%-20s", "|NOME") + "\t"
+                + String.format("%-40s", "|NOME") + "\t"
                 + String.format("%-20s", "|AUTOR") + "\t"
                 + String.format("%-20s", "|EDITORA") + "\t"
                 + String.format("%-5s", "|ANO"));
         for (ViewDisponiveis livro : listaLivrosDisponiveis) {
             System.out.println(String.format("%-10s", livro.getLivro().getIsbn()) + "\t"
-                    + String.format("%-20s", "|" + livro.getLivro().getNome()) + "\t"
+                    + String.format("%-40s", "|" + livro.getLivro().getNome()) + "\t"
                     + String.format("%-20s", "|" + livro.getLivro().getAutor()) + "\t"
                     + String.format("%-20s", "|" + livro.getLivro().getEditora()) + "\t"
                     + String.format("%-5s", "|" + DateUtil.yearToString(livro.getLivro().getAno()))); // converte ano data em String
@@ -113,14 +113,14 @@ public class RelatoriosUI {
     public void mostrarLivrosRetirados(List<ViewMaisEmprestados> listaLivrosDisponiveis) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ISBN") + "\t"
-                + String.format("%-20s", "|NOME") + "\t"
+                + String.format("%-40s", "|NOME") + "\t"
                 + String.format("%-20s", "|AUTOR") + "\t"
                 + String.format("%-20s", "|EDITORA") + "\t"
                 + String.format("%-20s", "|RETIRADAS") + "\t"
                 + String.format("%-5s", "|ANO"));
         for (ViewMaisEmprestados livro : listaLivrosDisponiveis) {
             System.out.println(String.format("%-10s", livro.getLivro().getIsbn()) + "\t"
-                    + String.format("%-20s", "|" + livro.getLivro().getNome()) + "\t"
+                    + String.format("%-40s", "|" + livro.getLivro().getNome()) + "\t"
                     + String.format("%-20s", "|" + livro.getLivro().getAutor()) + "\t"
                     + String.format("%-20s", "|" + livro.getLivro().getEditora()) + "\t"
                     + String.format("%-20s", "|" + livro.getQtd()) + "\t"
