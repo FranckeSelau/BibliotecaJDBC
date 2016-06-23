@@ -32,13 +32,13 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
                 throw new Exception("Este livro consta na nossa lista de livros emprestados, não pode ser emprestado novamente.");
             }
             int matricula = retirada.getCliente().getMatricula();
-            sql = "select * from view_livros_alocados where matricula = ? and alocados >= 1";
+            sql = "select * from view_livros_alocados where matricula = ? and alocados >= 3";
             conectarObtendoId(sql);
             comando.setInt(1, matricula);
             resultado = comando.executeQuery();
             
             if(resultado.next()){
-                throw new Exception("O cliente já possuí um livro emprestado, não pode retirar mais.");
+                throw new Exception("O cliente já possuí três livros emprestados, não pode retirar mais.");
             }
             
             sql = "INSERT INTO retirada (retirada, devolvido, entrega, matricula, isbn, livroDevolvido)"
