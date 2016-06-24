@@ -14,7 +14,6 @@ import java.util.List;
 import model.Devolucao;
 import model.Retirada;
 import negocio.ClienteNegocio;
-import negocio.NegocioException;
 import view.UIUtil;
 
 /**
@@ -104,8 +103,7 @@ public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
                 int idRetirada = resultado.getInt("retirada");
                 Retirada retirada = retiradaDao.procurarPorId(idRetirada);
                 java.sql.Date dataSqlDevolvido = resultado.getDate("devolvido");
-                java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());
-                
+                java.util.Date dataUtilDevolvido = new java.util.Date(dataSqlDevolvido.getTime());                
                 
                 try {
                     Devolucao dev = new Devolucao(id, retirada, dataUtilDevolvido);
@@ -128,5 +126,4 @@ public class DevolucaoDaoBd  extends DaoBd<Devolucao> implements DevolucaoDao{
     public Devolucao procurarPorId(int matricula) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }

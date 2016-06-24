@@ -55,7 +55,7 @@ public class ClienteUI {
                         consultarClientePorNome();
                         break;
                     case ClienteMenu.OP_SAIR:
-                        System.out.println("Finalizando a aplicacao..");
+                        System.out.println("Retornando ao menu principal..");
                         break;
                     default:
                         System.out.println("Opção inválida..");
@@ -98,9 +98,7 @@ public class ClienteUI {
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
-    }
-    
-   
+    }   
 
     private void atualizarCliente() {
         mostrarClientes();

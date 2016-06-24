@@ -20,10 +20,8 @@ public class Devolucao {
     public Devolucao(int id, Retirada retirada, Date devolvido){
         this.id = id;
         this.retirada = retirada;
-        this.devolvido = devolvido;
-        
-    }
-   
+        this.devolvido = devolvido;        
+    }   
 
     public int getId() {
         return id;
@@ -41,8 +39,6 @@ public class Devolucao {
         this.retirada = retirada;
     }
 
-    
-
     public Date getDevolvido() {
         return devolvido;
     }
@@ -50,5 +46,4 @@ public class Devolucao {
     public void setDevolvido(Date devolvido) {
         this.devolvido = devolvido;
     }
-
 }

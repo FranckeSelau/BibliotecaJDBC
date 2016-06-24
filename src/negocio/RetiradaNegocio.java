@@ -51,9 +51,6 @@ public class RetiradaNegocio {
     private void validarCamposObrigatorios(Retirada r) throws NegocioException {
         if (r.getCliente() == null) {
             throw new NegocioException("Campo Cliente nao informado");
-        }
-        
-        
-        
+        }        
     }
 }

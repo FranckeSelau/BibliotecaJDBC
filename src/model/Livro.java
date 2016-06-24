@@ -131,7 +131,5 @@ public class Livro {
 
     public void setRetiradas(int retiradas) {
         this.retiradas = retiradas;
-    }
-    
-    
+    }    
 }

@@ -4,8 +4,6 @@ import dao.RetiradaDao;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
-import model.Cliente;
-import model.Livro;
 import model.Retirada;
 import negocio.ClienteNegocio;
 import negocio.LivroNegocio;
@@ -104,38 +102,7 @@ public class RetiradaUI {
                 UIUtil.mostrarErro(ex.getMessage());
             }
     }
-
-    /**
-     * Retorna cliente através da matrícula.
-     *
-     * @param matricula, insere matrícula de um cliente.
-     * @return cliente selecionado.
-     */
-    /*
-     private Cliente getCliente(int matricula) throws Exception {
-     Cliente cliente = this.clienteNegocio.procurarMatricula(matricula);
-     if (cliente == null) {
-     throw new Exception("Erro! Cliente não encontrado.");
-     }
-     System.out.println("Cliente selecionado: " + cliente.getNome());
-     return cliente;
-     }
-
-     /**
-     * Retorna livro através da ISBN.
-     * 
-     * @param isbn, insere isbn de um livro.
-     * @return livro selecionado.
-     *//*
-     private Livro getLivro(String isbn) throws Exception {
-     Livro livro = this.livroNegocio.procurarPorIsbn(isbn);
-     if (livro == null) {
-     throw new Exception("Erro! Livro não encontrado.");
-     }
-     System.out.println("Livro selecionado: " + livro.getNome());
-     return livro;
-     }*/
-
+    
     public void mostrarRetirada() {
         List<Retirada> listaRetiradas = retiradaNegocio.listar();
         this.mostrarRetirada(listaRetiradas);
@@ -149,7 +116,7 @@ public class RetiradaUI {
     public void mostrarRetirada(List<Retirada> listaRetiradas) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ID") + "\t"
-                + String.format("%-20s", "|LIVRO") + "\t"
+                + String.format("%-40s", "|LIVRO") + "\t"
                 + String.format("%-20s", "|DISP") + "\t"
                 + String.format("%-20s", "|CLIENTE") + "\t"
                 + String.format("%-20s", "|RETIRADA") + "\t"
@@ -159,7 +126,7 @@ public class RetiradaUI {
         for (Retirada retirada : listaRetiradas) {
             String disponivel = retirada.getLivroDevolvido() ? "Sim" : "Não";
             System.out.println(String.format("%-10s", retirada.getId()) + "\t"
-                    + String.format("%-20s", "|" + retirada.getLivro().getNome()) + "\t"
+                    + String.format("%-40s", "|" + retirada.getLivro().getNome()) + "\t"
                     + String.format("%-20s", "|" + disponivel) + "\t"
                     + String.format("%-20s", "|" + retirada.getCliente().getNome()) + "\t"
                     + String.format("%-20s", "|" + retirada.getRetiradaFormatada()) + "\t"

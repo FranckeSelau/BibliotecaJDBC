@@ -137,38 +137,6 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
         return (listaLivro);
     }
 
-    /*
-    @Override
-    public Cliente procurarPorId(int matricula) {
-        String sql = "SELECT * FROM cliente WHERE matricula = ?";
-
-        try {
-            conectar(sql);
-            comando.setInt(1, matricula);
-
-            ResultSet resultado = comando.executeQuery();
-
-            if (resultado.next()) {
-                String nome = resultado.getString("nome");
-                String telefone = resultado.getString("telefone");
-                
-                Cliente cli = new Cliente(matricula, nome, telefone);
-
-                return cli;
-
-            }
-
-        } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar o paciente pelo id do Banco de Dados!");
-            throw new RuntimeException(ex);
-        } finally {
-            fecharConexao();
-        }
-
-        return (null);
-    }
-*/
-
     @Override
     public Livro procurarPorId(int matricula) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -208,5 +176,4 @@ public class LivroDaoBd extends DaoBd<Livro> implements LivroDao {
 
         return (null);
     }
-
 }

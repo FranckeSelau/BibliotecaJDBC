@@ -160,8 +160,6 @@ public class RetiradaDaoBd extends DaoBd<Retirada> implements RetiradaDao {
         return (listaRetiradas);
     }
     
-    
-
     @Override
     public Retirada procurarPorId(int id) {
         String sql = "SELECT * FROM retirada WHERE id = ?";

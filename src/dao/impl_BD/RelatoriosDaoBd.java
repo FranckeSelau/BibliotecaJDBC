@@ -49,8 +49,7 @@ public class RelatoriosDaoBd extends DaoBd<Relatorio> implements RelatorioDao{
             fecharConexao();
         }
         return lista;
-    }
-    
+    }    
     
     public List<ViewDisponiveis> getLivrosDisponiveis(){
         List<ViewDisponiveis> lista = new ArrayList<ViewDisponiveis>();
@@ -159,6 +158,5 @@ public class RelatoriosDaoBd extends DaoBd<Relatorio> implements RelatorioDao{
     @Override
     public Relatorio procurarPorId(int matricula) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }    
 }

@@ -16,8 +16,7 @@ public class RelatoriosMenu {
     public static final int OP_RELATORIO_CLIENTES_RET = 3;
     public static final int OP_RELATORIO_CLIENTES_ATR = 4;
     public static final int OP_RELATORIO_LIVROS_DATA = 5;
-    public static final int OP_VOLTAR = 0;
-    
+    public static final int OP_VOLTAR = 0;    
     
     /**
      * Retorna as opções do Menu Relatorio.

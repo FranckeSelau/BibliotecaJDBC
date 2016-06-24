@@ -34,5 +34,4 @@ public class ViewClientesMaisEmprestimos {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-
 }

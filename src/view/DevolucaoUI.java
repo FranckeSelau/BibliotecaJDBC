@@ -2,15 +2,11 @@ package view;
 
 import dao.RetiradaDao;
 import dao.impl_BD.RetiradaDaoBd;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import model.Devolucao;
 import model.Retirada;
-import negocio.ClienteNegocio;
 import negocio.DevolucaoNegocio;
-import negocio.LivroNegocio;
-import negocio.NegocioException;
 import util.Console;
 import view.menu.DevolucaoMenu;
 
@@ -98,7 +94,6 @@ public class DevolucaoUI {
             System.err.println("ERRO! O ISBN deve ser numérico!");
         }
     }
-
    
     public void mostrarRetirada() {
         List<Devolucao> lista = devolucaoNegocio.listar();
@@ -113,7 +108,7 @@ public class DevolucaoUI {
     public void mostraDevolucao(List<Devolucao> lista) {
         System.out.println("--------------------------------------\n");
         System.out.println(String.format("%-10s", "ID") + "\t"
-                + String.format("%-20s", "|LIVRO") + "\t"
+                + String.format("%-40s", "|LIVRO") + "\t"
                 + String.format("%-20s", "|DISP") + "\t"
                 + String.format("%-20s", "|CLIENTE") + "\t"
                 + String.format("%-20s", "|RETIRADA") + "\t"
@@ -123,7 +118,7 @@ public class DevolucaoUI {
         for (Devolucao dev : lista) {
             String disponivel = dev.getRetirada().getLivroDevolvido() ? "Sim" : "Não";
             System.out.println(String.format("%-10s", dev.getId()) + "\t"
-                    + String.format("%-20s", "|" + dev.getRetirada().getLivro().getNome()) + "\t"
+                    + String.format("%-40s", "|" + dev.getRetirada().getLivro().getNome()) + "\t"
                     + String.format("%-20s", "|" + disponivel) + "\t"
                     + String.format("%-20s", "|" + dev.getRetirada().getCliente().getNome()) + "\t"
                     + String.format("%-20s", "|" + dev.getRetirada().getRetiradaFormatada()) + "\t"

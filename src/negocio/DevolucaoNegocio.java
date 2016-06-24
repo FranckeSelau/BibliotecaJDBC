@@ -5,7 +5,6 @@
  */
 package negocio;
 
-import dao.DevolucaoDao;
 import dao.impl_BD.DevolucaoDaoBd;
 import java.util.List;
 import model.Devolucao;

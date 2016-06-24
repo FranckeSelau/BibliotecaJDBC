@@ -5,11 +5,8 @@
  */
 package view;
 
-import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.List;
-import model.Cliente;
-import model.Livro;
 import model.ViewClientesMaisAtrasos;
 import model.ViewClientesMaisEmprestimos;
 import model.ViewDisponiveis;
@@ -142,8 +139,7 @@ public class RelatoriosUI {
                   
                     + String.format("%-20s", "|" + cliente.getCliente().getTelefone()));
         }
-    }
-    
+    }    
     
     public void mostrarClientesAtrasos(List<ViewClientesMaisAtrasos> clientes) {
         System.out.println("--------------------------------------\n");
@@ -154,8 +150,7 @@ public class RelatoriosUI {
                 + String.format("%-20s", "|TELEFONE"));
         for (ViewClientesMaisAtrasos cliente : clientes) {
             System.out.println(String.format("%-10s", cliente.getCliente().getMatricula()) + "\t"
-                    + String.format("%-20s", "|" + cliente.getCliente().getNome()) + "\t"
-                  
+                    + String.format("%-20s", "|" + cliente.getCliente().getNome()) + "\t"                  
                     + String.format("%-20s", "|" + cliente.getQtd()) + "\t"
                     + String.format("%-20s", "|" + cliente.getCliente().getTelefone()));
         }

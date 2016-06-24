@@ -32,7 +32,5 @@ public class ViewMaisEmprestados {
 
     public void setLivro(Livro livro) {
         this.livro = livro;
-    }
-    
-    
+    }    
 }

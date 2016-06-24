@@ -2,7 +2,6 @@ package view;
 
 import java.text.ParseException;
 import model.Livro;
-
 import view.menu.LivroMenu;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -31,8 +30,7 @@ public class LivroUI {
     public LivroUI(Livro livro) {
         this();
         this.livro = livro;
-    }
-    
+    }   
     
     public void menu() {
         int opcao = -1;
@@ -57,7 +55,7 @@ public class LivroUI {
                         consultarLivroPorNome();
                         break;
                     case LivroMenu.OP_SAIR:
-                        System.out.println("Finalizando a aplicacao..");
+                        System.out.println("Retornando ao menu principal..");
                         break;
                     default:
                         System.out.println("Opção inválida..");

@@ -5,7 +5,6 @@
  */
 package negocio;
 
-import dao.RelatorioDao;
 import dao.impl_BD.RelatoriosDaoBd;
 import java.util.List;
 import model.ViewClientesMaisAtrasos;
@@ -39,7 +38,5 @@ public class RelatorioNegocio {
     
     public List<ViewClientesMaisAtrasos> getClientesComMaisAtrrasos(){
         return this.relatorioBd.getClientesComMaisAtrrasos();
-    } 
-    
-    
+    }     
 }

@@ -33,7 +33,5 @@ public class ViewDisponiveis {
 
     public void setLivro(Livro livro) {
         this.livro = livro;
-    }
-    
-    
+    }    
 }
