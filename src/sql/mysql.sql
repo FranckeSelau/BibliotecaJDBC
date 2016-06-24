@@ -1,15 +1,20 @@
-
 -- phpMyAdmin SQL Dump
 -- version 4.2.10
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jun 09, 2016 at 11:50 AM
+-- Generation Time: Jun 16, 2016 at 11:13 AM
 -- Server version: 5.5.38
 -- PHP Version: 5.6.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `biblioteca`
@@ -25,7 +30,7 @@ CREATE TABLE `cliente` (
 `matricula` bigint(20) unsigned NOT NULL,
   `nome` varchar(40) DEFAULT NULL,
   `telefone` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `cliente`
@@ -46,16 +51,17 @@ CREATE TABLE `devolucao` (
 `id` int(11) NOT NULL,
   `retirada` int(11) NOT NULL,
   `devolvido` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `devolucao`
 --
 
 INSERT INTO `devolucao` (`id`, `retirada`, `devolvido`) VALUES
-(1, 1, '2016-06-09'),
+(1, 1, '2016-06-17'),
 (2, 4, '2016-06-09'),
-(3, 2, '2016-06-09');
+(3, 2, '2016-06-09'),
+(14, 3, '2016-06-16');
 
 -- --------------------------------------------------------
 
@@ -70,7 +76,7 @@ CREATE TABLE `livro` (
   `editora` varchar(40) DEFAULT NULL,
   `ano` date DEFAULT NULL,
   `retiradas` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `livro`
@@ -94,7 +100,7 @@ CREATE TABLE `retirada` (
   `matricula` int(11) NOT NULL,
   `isbn` int(11) NOT NULL,
   `livroDevolvido` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `retirada`
@@ -104,8 +110,43 @@ INSERT INTO `retirada` (`id`, `retirada`, `devolvido`, `entrega`, `matricula`, `
 (1, '2016-06-09', '2016-06-16', '2016-06-16', 1, 1, NULL),
 (2, '2016-06-09', '2016-06-16', '2016-06-16', 1, 1, NULL),
 (3, '2016-06-09', '2016-06-16', '2016-06-16', 1, 2, NULL),
-(4, '2016-06-09', '2016-06-16', '2016-06-16', 2, 2, NULL);
+(4, '2016-06-09', '2016-06-16', '2016-06-16', 2, 2, NULL),
+(5, '2016-06-16', '2016-06-23', '2016-06-23', 1, 1, NULL),
+(6, '2016-06-16', '2016-06-23', '2016-06-23', 2, 2, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `view_clientes_mais_atrasos`
+--
+CREATE TABLE `view_clientes_mais_atrasos` (
+`matricula` bigint(20) unsigned
+,`nome` varchar(40)
+,`telefone` varchar(15)
+,`total_atrasos` bigint(21)
+);
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `view_clientes_mais_emprestimos`
+--
+CREATE TABLE `view_clientes_mais_emprestimos` (
+`matricula` bigint(20) unsigned
+,`nome` varchar(40)
+,`telefone` varchar(15)
+,`qtd_emprestimos` bigint(21)
+);
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `view_livros_alocados`
+--
+CREATE TABLE `view_livros_alocados` (
+`matricula` bigint(20) unsigned
+,`nome` varchar(40)
+,`telefone` varchar(15)
+,`alocados` bigint(22)
+);
 -- --------------------------------------------------------
 
 --
@@ -145,6 +186,33 @@ CREATE TABLE `view_mais_emprestados` (
 ,`isbn` int(11)
 ,`nome` varchar(40)
 );
+-- --------------------------------------------------------
+
+--
+-- Structure for view `view_clientes_mais_atrasos`
+--
+DROP TABLE IF EXISTS `view_clientes_mais_atrasos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_clientes_mais_atrasos` AS select `c`.`matricula` AS `matricula`,`c`.`nome` AS `nome`,`c`.`telefone` AS `telefone`,(select count(0) from (`retirada` `r` join `devolucao` `d` on((`d`.`retirada` = `r`.`id`))) where ((`r`.`matricula` = `c`.`matricula`) and ((to_days(`d`.`devolvido`) - to_days(`r`.`devolvido`)) > 0))) AS `total_atrasos` from `cliente` `c`;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `view_clientes_mais_emprestimos`
+--
+DROP TABLE IF EXISTS `view_clientes_mais_emprestimos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_clientes_mais_emprestimos` AS select `c`.`matricula` AS `matricula`,`c`.`nome` AS `nome`,`c`.`telefone` AS `telefone`,(select count(0) from `retirada` where (`retirada`.`matricula` = `c`.`matricula`)) AS `qtd_emprestimos` from `cliente` `c` order by (select count(0) from `retirada` where (`retirada`.`matricula` = `c`.`matricula`)) desc;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `view_livros_alocados`
+--
+DROP TABLE IF EXISTS `view_livros_alocados`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_livros_alocados` AS select `c`.`matricula` AS `matricula`,`c`.`nome` AS `nome`,`c`.`telefone` AS `telefone`,((select count(0) from `retirada` `r` where (`r`.`matricula` = `c`.`matricula`)) - (select count(0) from (`retirada` `r` join `devolucao` `d` on((`d`.`retirada` = `r`.`id`))) where (`r`.`matricula` = `c`.`matricula`))) AS `alocados` from `cliente` `c`;
+
 -- --------------------------------------------------------
 
 --
@@ -208,19 +276,22 @@ ALTER TABLE `retirada`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-MODIFY `matricula` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `matricula` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `devolucao`
 --
 ALTER TABLE `devolucao`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `livro`
 --
 ALTER TABLE `livro`
-MODIFY `isbn` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `isbn` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `retirada`
 --
 ALTER TABLE `retirada`
-MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
